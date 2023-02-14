@@ -16,6 +16,9 @@ engine = create_engine('sqlite:///tennis.db')
 # As of now, any setters do not update the db. commitToDB() must be called to update
 # getters also return the data in its unupdated form
 
+# if you want to create a new entry in any of the tables just create an object and DO NOT enter an id just fill the remaining details
+# if you want to access an entry just create an object and enter the primary key of the entry 
+
 ############### Dont Ignore ###############
 
 
