@@ -5,13 +5,13 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-class Tournament (Base):
+class Tournaments (Base):
     __tablename__= 'tournament'
     tournament_id = Column(Integer, primary_key = True)
     name = Column(String, nullable = False)
     difficulity = Column(Float, nullable = False)
 
-class Match (Base):
+class Matches (Base):
     __tablename__= 'match'
     match_id = Column(Integer, primary_key = True)
     score_player1 = Column(Integer, nullable = False)
@@ -21,7 +21,7 @@ class Match (Base):
     fkwinner = Column(Integer, ForeignKey('player.player_id'), nullable = False)
     fktournament = Column(Integer, ForeignKey('tournament.tournament_id'), nullable = False)
 
-class Player (Base):
+class Players (Base):
     __tablename__= 'player'
     player_id = Column(Integer, primary_key = True)
     name = Column(String, nullable = False)
@@ -29,6 +29,6 @@ class Player (Base):
     points = Column(Integer, nullable = False)
     prize_money = Column(Integer, nullable = False)#
 
-engine = create_engine('sqlite:///H:\\UNI-Final\\Software Dev\\tennis.db')
+engine = create_engine('sqlite:///tennis.db')
 
 Base.metadata.create_all(engine)
