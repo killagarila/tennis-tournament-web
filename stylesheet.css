@@ -130,3 +130,18 @@ html, body {
     height: 150px;
     width: 100%;
   }
+  /*Input box style sheet for input page */
+  .inputbox {
+    width: 50%;
+    min-height: 100px;
+    max-height: fit-content;
+    background-color: rgba(141, 159, 135, 0.9); /* background colour on table */
+    margin: auto;
+    border-radius: 20px;
+    text-align: center;
+    color:white;
+    padding:2%;
+  }
+  .inputform{
+  margin-bottom:2%;
+  }
