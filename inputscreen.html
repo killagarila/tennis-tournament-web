@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tennis-Tournament</title>
+        <link rel="stylesheet" href="stylesheet.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="background-up">
+            <nav>
+                <div class="navbar">
+                    <a href="#home" class="navwidth">Main Page</a>
+                    <div class="dropdown navwidth">
+                    <button class="dropbtn navwidth">Tournaments
+                        <i class="fa fa-caret-down navwidth"></i>
+                    </button>
+                    <div class="dropdown-content navwidth" >
+                        <div>
+
+                        </div>
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                    </div>
+                    <a href="#news">Add match</a>
+                </div>
+            </nav>
+            <div class="inputbox">
+                <form>
+                    <!--Form for creating a new match with basic data validation in html-->
+                    <div class="inputform">
+                        <!--Creating input for first player match details-->
+                        <label for="p1name">Player 1 Name: </label>
+                        <input type="text" id="p1name" name="p1name" required>
+                        <label for="p1score">Player 1 Score: </label>
+                        <input type="number" max="5" id="p1score" name="p1score" required>
+                    </div>
+                    <div class="inputform">
+                        <!--Creating input for second player match details-->
+                        <label for="p2name">Player 2 Name: </label>
+                        <input type="text" id="p2name" name="p2name" required>
+                        <label for="p2score">Player 2 Score: </label>
+                        <input type="number" max="5" id="p2score" name="p2score" required>
+                    </div>
+                    <div class="inputform">
+                        <!--Tournament selection box with tournaments from database-->
+                        <label for="tournsel">Tournament: </label>
+                        <select id="tournsel" name="tournsel" required>
+                            {% for tournament in torunaments %}
+                                <option value="{{tournament}}">{{tournament}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <input type="submit" id="newdatasubmit" name="newdatasubmit">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

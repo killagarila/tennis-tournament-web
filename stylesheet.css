@@ -107,6 +107,20 @@ html, body {
     border-radius: 20px;
     text-align: center;
   }
+  .inputbox {
+    width: 50%;
+    min-height: 100px;
+    max-height: fit-content;
+    background-color: rgba(59, 59, 59, 0.9);
+    margin: auto;
+    border-radius: 20px;
+    text-align: center;
+    color:white;
+    padding:2%;
+  }
+.inputform{
+  margin-bottom:2%;
+}
 
   .boardtitle {
     background-image: linear-gradient(to top, rgba(53,53,53,0), rgb(0, 0, 0) 50%);
