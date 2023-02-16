@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Tennis-Tournament</title>
-        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="StyleSheet" href="{{ url_for('static', filename='stylesheet.css') }}" type="text/css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
@@ -10,7 +10,7 @@
         <div class="background-up">
             <nav>
                 <div class="navbar">
-                    <a href="#home" class="navwidth">Main Page</a>
+                    <a href="/" class="navwidth">Main Page</a>
                     <div class="dropdown navwidth">
                         <button class="dropbtn navwidth">Tournaments<i class="fa fa-caret-down navwidth"></i></button>
                         <div class="dropdown-content navwidth">
@@ -20,7 +20,7 @@
                             <a href="#">Tournament 4</a>
                         </div>
                     </div>
-                    <a href="#news">New-Tournament</a>
+                    <a href="/newmatch">New-Tournament</a>
                 </div>
             </nav>
             <div class="topspace"></div>
@@ -35,9 +35,9 @@
                         </tr>
                         {% for row in rows %}
                             <tr>
-                                <th> {%row[1]%} </th>  <!-- position in leaderboard -->
-                                <th> {%row[2]% </th> <!-- Name of Player -->
-                                <th> {%row[3]% </th> <!-- Points earned by Player -->
+                                <th> {{row[1]}} </th>  <!-- position in leaderboard -->
+                                <th> {{row[2]}} </th> <!-- Name of Player -->
+                                <th> {{row[3]}} </th> <!-- Points earned by Player -->
                             </tr>
                         {% endfor %}
                     </table>
@@ -52,9 +52,9 @@
                         </tr>
                         {% for row2 in row2s %}
                             <tr>
-                                <th> {%row2[1]%} </th>  <!-- position in leaderboard -->
-                                <th> {%row2[2]% </th> <!-- Name of Player -->
-                                <th> {%row2[3]% </th> <!-- Points earned by Player -->
+                                <th> {{row2[1]}} </th>  <!-- position in leaderboard -->
+                                <th> {{row2[2]}} </th> <!-- Name of Player -->
+                                <th> {{row2[3]}} </th> <!-- Points earned by Player -->
                             </tr>
                         {% endfor %}
                     </table>
@@ -71,9 +71,9 @@
                         </tr>
                         {% for row3 in row3s %}
                             <tr>
-                                <th> {%row3[1]%} </th>  <!-- position in leaderboard -->
-                                <th> {%row3[2]% </th> <!-- Name of Player -->
-                                <th> {%row3[3]% </th> <!-- Points earned by Player -->
+                                <th> {{row3[1]}} </th>  <!-- position in leaderboard -->
+                                <th> {{row3[2]}} </th> <!-- Name of Player -->
+                                <th> {{row3[3]}} </th> <!-- Points earned by Player -->
                             </tr>
                         {% endfor %}
                     </table>
@@ -88,9 +88,9 @@
                         </tr>
                         {% for row4 in row4s %}
                             <tr>
-                                <th> {%row4[1]%} </th>  <!-- position in leaderboard -->
-                                <th> {%row4[2]% </th> <!-- Name of Player -->
-                                <th> {%row4[3]% </th> <!-- Points earned by Player -->
+                                <th> {{row4[1]}} </th>  <!-- position in leaderboard -->
+                                <th> {{row4[2]}} </th> <!-- Name of Player -->
+                                <th> {{row4[3]}} </th> <!-- Points earned by Player -->
                             </tr>
                         {% endfor %}
                     </table>

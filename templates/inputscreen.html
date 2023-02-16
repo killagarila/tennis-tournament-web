@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Tennis-Tournament</title>
-        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="StyleSheet" href="{{ url_for('static', filename='stylesheet.css') }}" type="text/css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
@@ -10,7 +10,7 @@
         <div class="background-up">
             <nav>
                 <div class="navbar">
-                    <a href="#home" class="navwidth">Main Page</a>
+                    <a href="/" class="navwidth">Main Page</a>
                     <div class="dropdown navwidth">
                     <button class="dropbtn navwidth">Tournaments
                         <i class="fa fa-caret-down navwidth"></i>
@@ -24,7 +24,7 @@
                         <a href="#">Link 3</a>
                     </div>
                     </div>
-                    <a href="#news">Add match</a>
+                    <a href="/newmatch">Add match</a>
                 </div>
             </nav>
             <div class="inputbox">
