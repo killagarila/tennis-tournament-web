@@ -1,10 +1,13 @@
 import sqlite3
+import os
+import pandas as pd
 from sql_declaratives import Base, Tournaments, Matches, Players
 from sqlalchemy import Table, Column, ForeignKey, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
 
 engine = create_engine('sqlite:///tennis.db')
 
@@ -32,10 +35,10 @@ session = DBSession()
 # session.commit()
 
 class Match:
-    def __init__(self, match_id = -1, fkplayer_1 = 0, fkplayer_2 = 0, score_player1 = 0, score_player2 = 0, fkwinner=0, fktournament=0):
+    def __init__(self, match_id = -1, fkplayer_1 = 0, fkplayer_2 = 0, score_player1 = 0, score_player2 = 0, fkwinner=0, fktournament=0, round=1):
         
         if match_id == -1:
-            self.main = Matches(score_player1 = score_player1, score_player2 = score_player2, fkplayer1 = fkplayer_1, fkplayer2=fkplayer_2,fkwinner=fkwinner,fktournament=fktournament)
+            self.main = Matches(score_player1 = score_player1, score_player2 = score_player2, fkplayer1 = fkplayer_1, fkplayer2=fkplayer_2,fkwinner=fkwinner,fktournament=fktournament, round = round)
             session.add(self.main)
             session.commit()
         else:
@@ -51,6 +54,7 @@ class Match:
         self.score_player2 = self.main.score_player2
         self.fkwinner = self.main.fkwinner
         self.fktournament = self.main.fktournament
+        self.round = self.main.round
 
     ###setters
     def setMatchID(self, match_id):
@@ -61,6 +65,9 @@ class Match:
     
     def setFPlayer2(self, fkplayer_2):
         self.fkplayer_2 = fkplayer_2
+    
+    def setRound(self, round):
+        self.round = round
 
     #####scoring for player 1
     
@@ -116,6 +123,38 @@ class Match:
     def getTournament(self):
         return self.fktournament
     
+    def getRound(self):
+        return self.round
+    
+    def givePoints(self):
+        # a round 5 win is 6 in the dictionary
+        points_dict = {
+            1 : 0,
+            2 : 5,
+            3 : 10,
+            4 : 30,
+            5 : 50,
+            6 : 100
+        }
+        if self.fkplayer1 == self.fkwinner:
+            loser = self.fkplayer_2
+        else:
+            loser = self.fkplayer1
+        tournament = Tournament(tournament_id=self.fktournament)
+        player = Player(player_id=loser)
+        player.addPoints(points_dict[self.round]*tournament.getDifficulty())
+        player.commitToDB()
+        if self.round == 5:
+            player = Player(player_id=self.fkwinner)
+            player.addPoints(points_dict[self.round+1]*tournament.getDifficulty())
+            player.commitToDB()
+        
+        pass
+    
+    def givePrizes():
+        
+        pass
+    
     def commitToDB(self):
         self.main.match_id = self.match_id
         self.main.fkplayer1 = self.fkplayer1
@@ -124,24 +163,37 @@ class Match:
         self.main.score_player2 = self.score_player2
         self.main.fkwinner = self.fkwinner
         self.main.fktournament = self.fktournament
+        self.main.round =self.round
         session.commit()
 
 class Tournament:
 
-    def __init__(self, tournament_id = -1, name = "", difficulty = 0.0):
-        if tournament_id == -1:
-            self.main = Tournaments(name=name, difficulty=difficulty)
-            session.add(self.main)
-            session.commit()
+    def __init__(self, tournament_id = -1, name = "", difficulty = 0.0, prize_money = "0", new_entry = False):
+        if new_entry == True:
+            if tournament_id == -1:
+                self.main = Tournaments(name=name, difficulty=difficulty, prize_money = prize_money)
+            elif int(tournament_id)<=4:
+                self.main = Tournaments(tournament_id=tournament_id, name=name, difficulty=difficulty,prize_money=prize_money)
+            else:
+                self.main = Tournaments(tournament_id=tournament_id, name=name, difficulty=difficulty,prize_money=prize_money)
+            try:
+                session.add(self.main)
+                session.commit()
+            except:
+                print("Object Deleted1")
+                
+                
         else:
             self.main = session.query(Tournaments).get(tournament_id)
             try:
-                print(self.main.difficulity)
+                print(self.main.difficulty)
             except AttributeError:
-                del self
+                print("Object Deleted2")
+                
         self.tournament_id = self.main.tournament_id
         self.name = self.main.name
-        self.difficulty = self.main.difficulity
+        self.difficulty = self.main.difficulty
+        self.prize_money =self.main.prize_money
     
     ####setters
 
@@ -154,6 +206,9 @@ class Tournament:
     def setName(self, name):
         self.name = name
     
+    def setPrizeMoney(self, prize_money):
+        self.prize_money = prize_money
+    
     ###getters
 
     def getTournament_id(self):
@@ -164,26 +219,41 @@ class Tournament:
     
     def getName(self):
         return self.name
+    
+    def getPrizeMoney(self):
+        return self.prize_money
 
     def commitToDB(self):
         self.main.tournament_id = self.tournament_id
         self.main.name = self.name
-        self.main.difficulity = self.difficulty
+        self.main.difficulty = self.difficulty
+        self.main.prize_money = self.prize_money
         session.commit()
+        
+    def checkDuplicate(self):
+        pass
 
 class Player:
 
-    def __init__(self, player_id = -1, player_name = "", gender = "", points = 0, prize_money = 0):
-        if player_id == -1:
-            self.main = Players(name=player_name, gender=gender, points=points, prize_money=prize_money)
-            session.add(self.main)
-            session.commit()
+    def __init__(self, player_id = -1, player_name = "", gender = "", points = 0, prize_money = 0, new_entry=False):
+        if new_entry == True:
+            if player_id == -1:
+                self.main = Players(name=player_name, gender=gender, points=points, prize_money=prize_money)
+            elif int(player_id) > -1:
+                print(int(player_id))
+                self.main = Players(player_id=int(player_id),name=player_name, gender=gender, points=points, prize_money=prize_money)
+            try:
+                session.add(self.main)
+                session.commit()
+            except:
+                print("Object Deleted1")
         else:
             self.main = session.query(Players).get(player_id)
             try:
                 print(self.main.name)
             except AttributeError:
                 del self
+                return
         self.player_id = self.main.player_id
         self.player_name = self.main.name
         self.gender = self.main.gender
@@ -250,3 +320,43 @@ class Player:
         self.main.points = self.points
         self.main.prize_money = self.prize_money
         session.commit()
+
+directory = os.fsencode("Tennis Tournament Data")
+for file in os.listdir(directory):
+    filename = os.fsdecode(file)
+    # print(filename)
+    
+# df = pd.read_csv("Tennis Tournament Data/MALE PLAYERS.csv")
+# # print(df)
+# for index, row in df.iterrows():
+#     # print(row["Players"])
+#     new_player = Player(player_id=row["Players"].strip("MP"), player_name=row["Players"], gender="Male", points = 0, prize_money = 0, new_entry=True)
+
+# df = pd.read_csv("Tennis Tournament Data/FEMALE PLAYERS.csv")
+# print(df)
+# for index, row in df.iterrows():
+#     # print(row["Players"])
+#     new_player = Player(player_id=int(row["Players"].strip("FP"))+32, player_name=row["Players"], gender="Female", points = 0, prize_money = 0, new_entry=True)
+# df = pd.read_csv("Tennis Tournament Data/PRIZE MONEY.csv")
+# print(df)
+# counter = 0
+# string = ""
+# for index, row in df.iterrows():
+#     # new_tournament = Tournament(name = row)
+#     if counter-8 <0:
+#         if counter == 0:
+#             tournament_to_file = row["Tournament"]
+#         string +=row[" Prize Money ($)"]+"/"
+#     else:
+#         print(string)
+#         print(row["Tournament"])
+#         string=string[:-1]
+#         print(string)
+#         print(f"Tournament to file: {tournament_to_file}")
+#         if tournament_to_file=="TAC1":
+#             print("fsdjkhfsjdfhsdhfjksdhfkjsdhfjkhsdjkfhsdjfhsdjkfhsdjkh")
+#             new_tournament = Tournament(tournament_id=1, name="TAC1", difficulty=2.7, prize_money=string, new_entry=True)
+#         counter = 0
+#         string = ""
+#     counter += 1
+#     # print(row[" Prize Money ($)"])
