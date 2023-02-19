@@ -7,8 +7,10 @@ import mysql.connector
 #Creating flask app
 app =Flask(__name__)
 app.secret_key='123' #Creating secret key
-#NEED TO ADD DATABASE FUNC HERE
 
+#NEED TO ADD DATABASE FUNC HERE#
+
+#====================================#
 
 #Creating routes for website
 @app.route('/')
@@ -19,7 +21,13 @@ def homepage():
 def newMatch():
     print("new match is running")
     return render_template('inputscreen.html')
-
+@app.route('/tournament',methods=["GET","POST"])
+def viewTournament():
+    #if request.method=="POST":
+    #Cant implement until database is setup on flask.
+    print("viewing details of tournament")
+    return render_template('tournament.html')
+#Finding an empty port
 if __name__ == '__main__':
     for i in range(13000, 18000):
         try:

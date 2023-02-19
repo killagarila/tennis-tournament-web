@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tennis-Tournament</title>
+        <link rel="StyleSheet" href="{{ url_for('static', filename='stylesheet.css') }}" type="text/css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="background-up">
+            <nav>
+                <div class="navbar">
+                    <a href="/" class="navwidth">Main Page</a>
+                    <div class="dropdown navwidth">
+                        <button class="dropbtn navwidth">Tournaments<i class="fa fa-caret-down navwidth"></i></button>
+                        <div class="dropdown-content navwidth" >
+                            <!--Add jinja endfor to dynamically get content-->
+                            <a href="/tournament" method="POST">Tournament 1</a>
+                            <a href="/tournament" method="POST">Tournament 2</a>
+                            <a href="/tournament" method="POST">Tournament 3</a>
+                            <a href="/tournament" method="POST">Tournament 4</a>
+                        </div>
+                    </div>
+                    <a href="/newmatch">Add match</a>
+                </div>
+            </nav>
+            
+        </div>
+    </body>
+</html>
+
+
