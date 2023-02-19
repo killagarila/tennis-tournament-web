@@ -21,6 +21,20 @@ def homepage():
 def newMatch():
     print("new match is running")
     return render_template('inputscreen.html')
+@app.route('/newmatch',methods=["POST"])
+def newMatchForm():
+    print("new match is running")
+    #creating way to fetch input from form
+    #Variables from form
+    player1name=request.form['p1name']
+    player1score=request.form['p1score']
+    player2name=request.form['p2name']
+    player2score=request.form['p2score']
+    tournamentSel=request.form['tournsel']
+    #Validation needs to be implemented 
+    #Waiting until practical to get DB up and running
+    #Putting data into object for SQL Alchemy -->needs doing
+    return render_template('inputscreen.html')
 @app.route('/tournament',methods=["GET","POST"])
 def viewTournament():
     #if request.method=="POST":

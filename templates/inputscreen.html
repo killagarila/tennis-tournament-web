@@ -24,7 +24,7 @@
                 </div>
             </nav>
             <div class="inputbox">
-                <form>
+                <form method="POST">
                     <!--Form for creating a new match with basic data validation in html-->
                     <div class="inputform">
                         <!--Creating input for first player match details-->
@@ -43,7 +43,7 @@
                     <div class="inputform">
                         <!--Tournament selection box with tournaments from database-->
                         <label for="tournsel">Tournament: </label>
-                        <select id="tournsel" name="tournsel" required>
+                        <select id="tournsel" name="tournsel">
                             {% for tournament in torunaments %}
                                 <option value="{{tournament}}">{{tournament}}</option>
                             {%endfor%}
