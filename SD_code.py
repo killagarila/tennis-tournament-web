@@ -136,6 +136,14 @@ class Match:
             5 : 50,
             6 : 100
         }
+        player1=Player(player_id=self.fkplayer1)
+        player2=Player(player_id=self.fkplayer_2)
+        if player1.getPoints()>player2.getPoints():
+            self.fkwinner==player1.getPlayerID()
+        elif player2.getPoints()>player1.getPoints():
+            self.fkwinner==player2.getPlayerID()
+        else:
+            return
         if self.fkplayer1 == self.fkwinner:
             loser = self.fkplayer_2
         else:
@@ -148,7 +156,6 @@ class Match:
             player = Player(player_id=self.fkwinner)
             player.addPoints(points_dict[self.round+1]*tournament.getDifficulty())
             player.commitToDB()
-        
         pass
     
     def givePrizes():
@@ -189,11 +196,11 @@ class Tournament:
                 print(self.main.difficulty)
             except AttributeError:
                 print("Object Deleted2")
-                
+
         self.tournament_id = self.main.tournament_id
         self.name = self.main.name
         self.difficulty = self.main.difficulty
-        self.prize_money =self.main.prize_money
+        self.prize_money =str(self.main.prize_money).split('/')
     
     ####setters
 
@@ -207,7 +214,10 @@ class Tournament:
         self.name = name
     
     def setPrizeMoney(self, prize_money):
-        self.prize_money = prize_money
+        if type(prize_money) == str:
+            self.prize_money = str(prize_money).split('/')
+        else:
+            self.prize_money = prize_money
     
     ###getters
 
@@ -231,6 +241,11 @@ class Tournament:
         session.commit()
         
     def checkDuplicate(self):
+        pass
+    
+    def getResult(self):
+        all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
+        print(all_matches[0].round)
         pass
 
 class Player:
@@ -325,38 +340,6 @@ directory = os.fsencode("Tennis Tournament Data")
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
     # print(filename)
-    
-# df = pd.read_csv("Tennis Tournament Data/MALE PLAYERS.csv")
-# # print(df)
-# for index, row in df.iterrows():
-#     # print(row["Players"])
-#     new_player = Player(player_id=row["Players"].strip("MP"), player_name=row["Players"], gender="Male", points = 0, prize_money = 0, new_entry=True)
+test = Tournament(tournament_id=5)
+test.getResult()
 
-# df = pd.read_csv("Tennis Tournament Data/FEMALE PLAYERS.csv")
-# print(df)
-# for index, row in df.iterrows():
-#     # print(row["Players"])
-#     new_player = Player(player_id=int(row["Players"].strip("FP"))+32, player_name=row["Players"], gender="Female", points = 0, prize_money = 0, new_entry=True)
-# df = pd.read_csv("Tennis Tournament Data/PRIZE MONEY.csv")
-# print(df)
-# counter = 0
-# string = ""
-# for index, row in df.iterrows():
-#     # new_tournament = Tournament(name = row)
-#     if counter-8 <0:
-#         if counter == 0:
-#             tournament_to_file = row["Tournament"]
-#         string +=row[" Prize Money ($)"]+"/"
-#     else:
-#         print(string)
-#         print(row["Tournament"])
-#         string=string[:-1]
-#         print(string)
-#         print(f"Tournament to file: {tournament_to_file}")
-#         if tournament_to_file=="TAC1":
-#             print("fsdjkhfsjdfhsdhfjksdhfkjsdhfjkhsdjkfhsdjfhsdjkfhsdjkh")
-#             new_tournament = Tournament(tournament_id=1, name="TAC1", difficulty=2.7, prize_money=string, new_entry=True)
-#         counter = 0
-#         string = ""
-#     counter += 1
-#     # print(row[" Prize Money ($)"])
