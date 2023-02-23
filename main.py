@@ -20,7 +20,7 @@ session = DBSession()
 def homepage():
     print("homepage is open...")
     return render_template('p1.html')
-@app.route('/newmatch',methods=["GET"])
+@app.route('/newmatch',methods=["GET","POST"])
 def newMatch():
     print("new match is running")    
     #Fetching tournaments from database
@@ -36,7 +36,7 @@ def newMatch():
         tournaments[z]=i
         z=z+1
     return render_template('inputscreen.html',tournaments=tournaments)
-@app.route('/newmatch',methods=["POST"])
+@app.route('/addmatch',methods=["GET","POST"])
 def newMatchForm():
     print("new match is running")
 
@@ -87,7 +87,7 @@ def newMatchForm():
 
     #Creating object for match object
 
-    return render_template('p1.html')
+    return redirect(url_for('newmatch'))
 @app.route('/tournament',methods=["GET","POST"])
 def viewTournament():
     #if request.method=="POST":
