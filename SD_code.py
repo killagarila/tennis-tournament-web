@@ -334,12 +334,13 @@ class Player:
         self.main.gender = self.gender
         self.main.points = self.points
         self.main.prize_money = self.prize_money
+        print("#\n"*10+self.player_id+"\n"+self.player_name+"\n"+self.gender+"\n"+self.points+"\n"+self.prize_money+"\n"+"#\n"*10)
         session.commit()
 
 directory = os.fsencode("Tennis Tournament Data")
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
     # print(filename)
-test = Tournament(tournament_id=5)
-test.getResult()
+# test = Tournament(tournament_id=5)
+# test.getResult()
 

@@ -139,7 +139,7 @@ def fillMatches():
                     new_match.givePoints()
                     pass
     print(f"error_counter:{error_counter}")
-# fillPlayers()
-# fillTournaments()
+fillPlayers()
+fillTournaments()
 # df = pd.read_csv(f"Tennis Tournament Data/")
-# fillMatches()
+fillMatches()
