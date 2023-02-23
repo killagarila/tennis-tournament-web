@@ -47,7 +47,9 @@ def newMatchForm():
     player2name=request.form['p2name']
     player2score=request.form['p2score']
     tournamentSel=request.form['tournsel']
-    roundIn=request.form['round']
+    tround=request.form['tround']
+    print(tournamentSel)
+    
     #Validating data input
     if player1score==player2score:
         error="Player scores cannot be the same"
@@ -59,11 +61,12 @@ def newMatchForm():
     elif player1score==player2score:
         error="Player scores cannot be the same"
         return error,render_template('inputscreen.html')
-    
-    #Creating object for match object
-    newMatch=Match(fkplayer_1=player1name,fkplayer_2=player2name,score_player1=player1score,score_player2=player2score,fkwinner=winner,fktournament=tournamentSel,round=roundIn)
+    #Validating score based on gender of tournament
 
-    return render_template('inputscreen.html')
+    #Creating object for match object
+    newMatch=Match(fkplayer_1=player1name,fkplayer_2=player2name,score_player1=player1score,score_player2=player2score,fkwinner=winner,fktournament=tournamentSel,round=tround)
+
+    return render_template('p1.html')
 @app.route('/tournament',methods=["GET","POST"])
 def viewTournament():
     #if request.method=="POST":
