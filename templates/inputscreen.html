@@ -45,7 +45,7 @@
                         <!--Tournament selection box with tournaments from database-->
                         <label for="tournsel">Tournament: </label>
                         <select id="tournsel" name="tournsel">
-                            {% for tournament in torunaments %}
+                            {% for tournament in tournaments %}
                                 <option value="{{tournament}}">{{tournament}}</option>
                             {%endfor%}
                         </select>

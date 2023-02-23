@@ -9,7 +9,10 @@ app =Flask(__name__)
 app.secret_key='123' #Creating secret key
 
 #NEED TO ADD DATABASE FUNC HERE#
-
+engine = create_engine('sqlite:///tennis.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 #====================================#
 
 #Creating routes for website
@@ -17,13 +20,26 @@ app.secret_key='123' #Creating secret key
 def homepage():
     print("homepage is open...")
     return render_template('p1.html')
-@app.route('/newmatch')
+@app.route('/newmatch',methods=["GET"])
 def newMatch():
-    print("new match is running")
-    return render_template('inputscreen.html')
+    print("new match is running")    
+    #Fetching tournaments from database
+    tournaments=session.query(Tournaments.name).all()
+    print(tournaments)
+    #Changing for readabiltiy
+    tournaments=list(tournaments)
+    z=0
+    #This code is real ghetto my apologies
+    for i in tournaments:
+        i=str(i)
+        i=i.strip("(' '),")
+        tournaments[z]=i
+        z=z+1
+    return render_template('inputscreen.html',tournaments=tournaments)
 @app.route('/newmatch',methods=["POST"])
 def newMatchForm():
     print("new match is running")
+
     #creating way to fetch input from form
     #Variables from form
     player1name=request.form['p1name']
