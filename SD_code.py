@@ -27,7 +27,6 @@ engine = create_engine('sqlite:///tennis.db')
 
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-
 session = DBSession()
 
 # new = Tournaments(difficulity = 3.5, name="test")
@@ -234,7 +233,6 @@ class Tournament:
         pass
 
 class Player:
-
     def __init__(self, player_id = -1, player_name = "", gender = "", points = 0, prize_money = 0, new_entry=False):
         if new_entry == True:
             if player_id == -1:
@@ -294,7 +292,7 @@ class Player:
     
     def removePrizeMoney(self, prize_removed):
         # self.removeprize = prize_removed
-        self.prize_money -+ prize_removed
+        self.prize_money -= prize_removed
 
     #####getters
 
