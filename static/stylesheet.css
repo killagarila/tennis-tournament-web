@@ -147,46 +147,7 @@ html, body {
   }
 
 
-  /* .brackbox{
-    background-color: aquamarine;
-    margin: 25px;
-    min-width: 100px;
-    max-width: 100px;
-    height: 50px;
-  }
-  
-  .round{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100px;
-  }
-
-  .round .round-one{
-    
-  }
-
-  .round .round-two{
-    
-  }
-
-  .round .round-semifinal{
-    
-  }
-
-  .round .round-final{
-    
-  }
-
-  .winner{
-
-  }
-
-  .loser{
-
-  } */
-
-
+  /* CSS below is for the tournament table */
   #container { 
     width: 800px; 
     height: 600px; 
@@ -194,17 +155,17 @@ html, body {
 }
 
 section { 
-    width: 130px; 
+    width: 110px; 
     height: 520px; 
     float: left;
 }
 
 section > div { 
-    width: 100px; 
+    width: 80px; 
     height: 20px; 
-    border: 1px solid #000; 
-    margin: 10px 0; 
-    background: #73789F; 
+    border: 1px solid #000;  /* Border colour of box in tournament table */
+    margin: 9px 0; 
+    background: #73789F; /* Background of box in tournament table */
     color: white; 
     padding: 10px 10px 10px 20px;
 }
@@ -213,7 +174,7 @@ section > div:nth-child(2n) {
     margin-bottom: 40px;
 }
 
-.connecter { 
+.conn { 
     width: 30px; 
     height: 520px; 
     float: left; 
@@ -225,7 +186,7 @@ section > div:nth-child(2n) {
     float: left; 
 }
 
-.connecter div { 
+.conn div { 
     border: 1px solid #000; 
     border-left: none; 
     height: 50px; 
@@ -233,7 +194,7 @@ section > div:nth-child(2n) {
     margin: 80px 0 0 1px;
 }
 
-.connecter div:first-child { 
+.conn div:first-child { 
     margin: 32px 0 0 1px; 
 }
 
@@ -246,11 +207,11 @@ section > div:nth-child(2n) {
     margin-top: 55px; 
 }
 
-#quarterFinals > div { 
+#QFinal > div { 
     margin-top: 91px; 
 }
 
-#quarterFinals > div:first-child { 
+#QFinal > div:first-child { 
     margin-top: 37px; 
 }
 
@@ -270,21 +231,59 @@ section > div:nth-child(2n) {
 #line2 div:first-child { 
     margin-top: 125px; 
 }
-#semiFinals > div { 
+#SFinal > div { 
     margin-top: 230px; 
 }
-#semiFinals > div:first-child { 
+#SFinal > div:first-child { 
     margin-top: 105px; 
 }
+
 #conn3 div { 
     margin-top: 125px; 
     height: 270px;
 }
+#conn3 > div:last-child { 
+  margin-top: 272px; 
+  height: 270px;
+}
 
 #line3 div { 
-    margin-top: 270px; 
+  margin-top: 270px; 
+}
+
+#line3 div:last-child { 
+  margin-top: 530px; 
 }
 
 #final > div { 
-    margin-top: 250px; 
+  margin-top: 250px; 
+}
+
+#final > div:last-child { 
+  margin-top: 490px; 
+}
+
+#conn4 div {
+  margin-top: 272px; 
+  height: 528px;
+
+}
+
+#line4 div {
+  margin-top: 530px; 
+}
+
+#winner {
+  margin-top: 500px;
+}
+
+.tournament-box{
+  background-color: white; /* Colour of the div behind tournament table */
+  padding: 5px;
+  height: 100%;
+  width: fit-content;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
