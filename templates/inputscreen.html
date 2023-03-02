@@ -7,7 +7,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <h1>{{error}}</h1>
         <div class="background-up">
             <nav>
                 <div class="navbar">
@@ -15,15 +14,17 @@
                     <div class="dropdown navwidth">
                         <button class="dropbtn navwidth">Tournaments<i class="fa fa-caret-down navwidth"></i></button>
                         <div class="dropdown-content navwidth">
-                            <a href="/tournament">Tournament 1</a>
-                            <a href="/tournament">Tournament 2</a>
-                            <a href="/tournament">Tournament 3</a>
-                            <a href="/tournament">Tournament 4</a>
+                            <form action="/tournament" method="POST">
+                                {% for tournament in tournaments %}
+                                    <input type="submit" class="tournselbutton" value="{{tournament}}" name="tournselb"></button>
+                                {% endfor %}
+                            </form>
                         </div>
                     </div>
                     <a href="/newmatch">Add match</a>
                 </div>
             </nav>
+            <h1>{{error}}</h1>
             <div class="inputbox">
                 <form method="POST">
                     <!--Form for creating a new match with basic data validation in html-->

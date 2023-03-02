@@ -143,9 +143,37 @@ html, body {
     padding:2%;
   }
   .inputform{
-  margin-bottom:2%;
+    margin-bottom:2%;
+  }
+  .tournselbutton{
+    background-color: inherit;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    /* padding: 15px 32px;
+    margin: 4px 2px; */
+    width: 100%;
+    height: 60px;
+    cursor: pointer;
   }
 
+  .tournselbutton:hover{
+    background-color: #6f9283;
+  }
+
+  .buttonbox{
+    width: 50%;
+    min-height: 100px;
+    max-height: fit-content;
+    margin: auto;
+    border-radius: 20px;
+    text-align: center;
+    color:white;
+    padding:2%;
+  }
 
   /* CSS below is for the tournament table */
   #container { 
@@ -278,11 +306,11 @@ section > div:nth-child(2n) {
 }
 
 .tournament-box{
-  background-color: white; /* Colour of the div behind tournament table */
+  /* background-color: white; Colour of the div behind tournament table */
   padding: 5px;
   height: 100%;
   width: fit-content;
-  position: fixed;
+  position:fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
