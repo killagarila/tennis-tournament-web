@@ -12,17 +12,9 @@ app.secret_key='123' #Creating secret key
 engine = create_engine('sqlite:///tennis.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
 #====================================#
-
-#Creating routes for website
-@app.route('/')
-def homepage():
-    print("homepage is open...")
-    return render_template('p1.html')
-
-@app.route('/newmatch',methods=["GET","POST"])
-def newMatch():
+def getTournaments():
+    session = DBSession()
     print("new match is running")    
     #Fetching tournaments from database
     tournaments=session.query(Tournaments.name).all()
@@ -36,12 +28,24 @@ def newMatch():
         i=i.strip("(' '),")
         tournaments[z]=i
         z=z+1
+    session.close()
+    return tournaments
+#Creating routes for website
+@app.route('/')
+def homepage():
+    print("homepage is open...")
+    tournaments=getTournaments()
+    return render_template('p1.html',tournaments=tournaments)
+@app.route('/newmatch',methods=["GET","POST"])
+def newMatch():
+    tournaments=getTournaments()
     return render_template('inputscreen.html',tournaments=tournaments)
 
 @app.route('/addmatch',methods=["GET","POST"])
 def newMatchForm():
+    tournaments=getTournaments()
     print("new match is running")
-
+    session = DBSession()
     #creating way to fetch input from form
     #Variables from form
     player1name=request.form['p1name']
@@ -59,14 +63,14 @@ def newMatchForm():
     #Validating data input
     if player1score==player2score:
         error="Player scores cannot be the same"
-        return error,render_template('inputscreen.html')
+        return error,redirect(url_for('newmatch'))
     if player1score > player2score:
         winner=player1[0].player_id
     elif player2score > player1score:
         winner=player2[0].player_id
     elif player1score==player2score:
         error="Player scores cannot be the same"
-        return error,render_template('inputscreen.html')
+        return error,redirect(url_for('newmatch'))
     #Validating score based on gender of tournament
 
     if player1[0].gender == player2[0].gender:
@@ -75,27 +79,29 @@ def newMatchForm():
                 if player1score==3 or player2score==3:    
                     newMatch=Match(fkplayer_1=player1[0].player_id,fkplayer_2=player2[0].player_id,score_player1=player1score,score_player2=player2score,fkwinner=winner,fktournament=fktour[0].tournament_id,round=tround)
                 else:
-                    return error, render_template('inputscreen.html')
+                    return error, redirect(url_for('newmatch'))
         elif player2[0].gender == 'Female':
             if int(player1score+player2score)<=3 or int(player1score+player2score)>=2:
                 if player1score==2 or player2score==2:
                     newMatch=Match(fkplayer_1=player1[0].player_id,fkplayer_2=player2[0].player_id,score_player1=player1score,score_player2=player2score,fkwinner=winner,fktournament=fktour[0].tournament_id,round=tround)
                 else:
-                    return error, render_template('inputscreen.html')
+                    return error, redirect(url_for('newmatch'))
     else:
         error="Player genders must be the same"
-        return error, render_template('inputscreen.html')    
+        return error, redirect(url_for('newmatch'),tournaments=tournaments)    
 
 
     #Creating object for match object
-
+    session.close()
     return redirect(url_for('newmatch'))
 
 @app.route('/tournament',methods=["GET","POST"])
 def viewTournament():
-    #if request.method=="POST":
-    #Cant implement until database is setup on flask.
-    print("viewing details of tournament")
+    if request.method=="POST":
+        selectedT=request.form['tournselb']
+        print(selectedT)
+        #Getting list of players from selected tournament
+        print("viewing details of tournament")
     return render_template('tournament.html')
     
 #Finding an empty port
