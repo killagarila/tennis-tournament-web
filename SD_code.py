@@ -180,14 +180,14 @@ class Match:
         tournament = Tournament(tournament_id=self.fktournament)
         player = Player(player_id=loser)
         prize_money_arr=tournament.getPrizeMoney()
-        print(prize_money_arr)
-        print(prize_money_arr[0])
+        # print(prize_money_arr)
+        # print(prize_money_arr[0])
         player.addPrizeMoney(int(prize_money_arr[prize_dict[self.round]]))
         player.commitToDB()
         if self.round==5:
             player = Player(player_id=self.fkwinner)
             player.addPrizeMoney(int(prize_money_arr[0]))
-            print(f"money to give to winner {prize_money_arr[0]}")
+            # print(f"money to give to winner {prize_money_arr[0]}")
             player.commitToDB()
     
     def commitToDB(self):
@@ -264,6 +264,7 @@ class Tournament:
     def checkDuplicate(self):
         pass
     
+    # Returns a sorted array based upon round for bracket display. First 8 elements are round 1 matches second 4 are round 2, and so on
     def getBracket(self, gender):
         all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
         all_matches = all_matches.order_by(Matches.round.asc())
@@ -285,6 +286,9 @@ class Tournament:
         self.main.prize_money = self.prize_money
         session.commit()
         
+def getTournamentbyName(name):
+    tournament=session.query(Tournaments).filter_by(name=name)
+    return Tournament(tournament_id=tournament[0].tournament_id)
 
 class Player:
     def __init__(self, player_id = -1, player_name = "", gender = "", points = 0, prize_money = 0, new_entry=False):
@@ -374,6 +378,8 @@ class Player:
         # print("#\n"*10+self.player_id+"\n"+self.player_name+"\n"+self.gender+"\n"+self.points+"\n"+self.prize_money+"\n"+"#\n"*10)
         session.commit()
 
+
+# Function to return an ordered list of all players of a specific list. Elements in list are Player objects and ordered by points
 def getLeaderboard(gender):
     array_of_players=[]
     if gender == "Male":
@@ -394,14 +400,17 @@ def getLeaderboard(gender):
         return
 
 
-directory = os.fsencode("Tennis Tournament Data")
-for file in os.listdir(directory):
-    filename = os.fsdecode(file)
+# directory = os.fsencode("Tennis Tournament Data")
+# for file in os.listdir(directory):
+#     filename = os.fsdecode(file)
     # print(filename)
 test = Tournament(tournament_id=5)
 array=test.getBracket("Female")
 for i in array:
-    print(i.getRound())
+    print(f"round:{i.getRound()}")
+    print(f"Player1:{i.getFkPlayer1()}")
+    print(f"Player2:{i.getFkPlayer2()}")
+    print("\n", end="")
 array = getLeaderboard("Male")
 count = 0
 money= 0
@@ -411,4 +420,6 @@ for i in array:
     money +=i.getPrizeMoney()
     
 print(f"total prize money:{money}")
+tournament = getTournamentbyName("TAW11")
+print(tournament.getName())
 
