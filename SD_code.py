@@ -137,9 +137,9 @@ class Match:
         }
         player1=Player(player_id=self.fkplayer1)
         player2=Player(player_id=self.fkplayer_2)
-        if player1.getPoints()>player2.getPoints():
+        if self.score_player1>self.score_player2:
             self.fkwinner==player1.getPlayerID()
-        elif player2.getPoints()>player1.getPoints():
+        elif self.score_player2>self.score_player1:
             self.fkwinner==player2.getPlayerID()
         else:
             return
@@ -149,17 +149,46 @@ class Match:
             loser = self.fkplayer1
         tournament = Tournament(tournament_id=self.fktournament)
         player = Player(player_id=loser)
-        player.addPoints(points_dict[self.round]*tournament.getDifficulty())
+        player.addPoints(round(points_dict[self.round]*tournament.getDifficulty()))
         player.commitToDB()
         if self.round == 5:
             player = Player(player_id=self.fkwinner)
-            player.addPoints(points_dict[self.round+1]*tournament.getDifficulty())
+            player.addPoints(round(points_dict[self.round+1]*tournament.getDifficulty()))
             player.commitToDB()
         pass
     
-    def givePrizes():
-        
-        pass
+    def givePrizes(self):
+        prize_dict = {
+            3: 7,
+            4: 3,
+            5: 1,
+            6: 0
+        }
+        if self.round<3:return
+        player1=Player(player_id=self.fkplayer1)
+        player2=Player(player_id=self.fkplayer_2)
+        if self.score_player1>self.score_player2:
+            self.fkwinner==player1.getPlayerID()
+        elif self.score_player2>self.score_player1:
+            self.fkwinner==player2.getPlayerID()
+        else:
+            return
+        if self.fkplayer1 == self.fkwinner:
+            loser = self.fkplayer_2
+        else:
+            loser = self.fkplayer1
+        tournament = Tournament(tournament_id=self.fktournament)
+        player = Player(player_id=loser)
+        prize_money_arr=tournament.getPrizeMoney()
+        print(prize_money_arr)
+        print(prize_money_arr[0])
+        player.addPrizeMoney(int(prize_money_arr[prize_dict[self.round]]))
+        player.commitToDB()
+        if self.round==5:
+            player = Player(player_id=self.fkwinner)
+            player.addPrizeMoney(int(prize_money_arr[0]))
+            print(f"money to give to winner {prize_money_arr[0]}")
+            player.commitToDB()
     
     def commitToDB(self):
         self.main.match_id = self.match_id
@@ -199,7 +228,7 @@ class Tournament:
         self.tournament_id = self.main.tournament_id
         self.name = self.main.name
         self.difficulty = self.main.difficulty
-        self.prize_money =str(self.main.prize_money).split('/')
+        self.prize_money =str(str(self.main.prize_money).replace(",","")).split('/')
     
     ####setters
 
@@ -303,7 +332,7 @@ class Player:
     ####add prize money
     def addPrizeMoney(self, prize_added):
         # self.addprize = prize_added
-        self.prize_money += prize_added
+        self.prize_money =self.main.prize_money + prize_added
     
     def removePrizeMoney(self, prize_removed):
         # self.removeprize = prize_removed
@@ -332,7 +361,7 @@ class Player:
         self.main.gender = self.gender
         self.main.points = self.points
         self.main.prize_money = self.prize_money
-        print("#\n"*10+self.player_id+"\n"+self.player_name+"\n"+self.gender+"\n"+self.points+"\n"+self.prize_money+"\n"+"#\n"*10)
+        # print("#\n"*10+self.player_id+"\n"+self.player_name+"\n"+self.gender+"\n"+self.points+"\n"+self.prize_money+"\n"+"#\n"*10)
         session.commit()
 
 directory = os.fsencode("Tennis Tournament Data")

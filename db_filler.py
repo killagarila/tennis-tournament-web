@@ -53,27 +53,27 @@ def fillTournaments():
     counter = 0
     string = ""
     for index, row in df.iterrows():
-        print(f"current row:{row['Tournament']}")
+        # print(f"current row:{row['Tournament']}")
         if counter == 0:
-            print("Flagged")
+            # print("Flagged")
             tournament_to_file = row["Tournament"]
-            print(f"T NAME {tournament_to_file}")
+            # print(f"T NAME {tournament_to_file}")
             
         if counter-8 <0:
             string +=row[" Prize Money ($)"]+"/"
-            print(string)
+            # print(string)
             
         else:
             # print(f"Tournament to file:{row['Tournament']}")
             string=string[:-1]
-            print(string)
-            print(f"Tournament to file: {tournament_to_file}")
+            # print(string)
+            # print(f"Tournament to file: {tournament_to_file}")
             # print(f"row[\"Tournament\"]{row['Tournament']}")
             rows = session.query(Tournaments).count()+4
             new_tournament = Tournament(tournament_id=rows,name=str(tournament_to_file).strip(" "), difficulty=diffdictionary[str(tournament_to_file).strip(" ")], prize_money=string, new_entry=True)
-            print(f"id: {new_tournament.getTournament_id()}/diff: {new_tournament.getDifficulty()}/Name: {new_tournament.getName()}/Prize Money: {new_tournament.getPrizeMoney()}")
+            # print(f"id: {new_tournament.getTournament_id()}/diff: {new_tournament.getDifficulty()}/Name: {new_tournament.getName()}/Prize Money: {new_tournament.getPrizeMoney()}")
             counter = 0
-            print("switch")
+            # print("switch")
             tournament_to_file = row["Tournament"]
             string = row[" Prize Money ($)"]+"/"
         counter += 1
@@ -90,13 +90,13 @@ def fillMatches():
     error_counter=0
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
-        print(f"Fucked file: {filename}")
+        # print(f"Fucked file: {filename}")
         try:
             df = pd.read_csv(f"Tennis Tournament Data/{filename}")
         except UnicodeDecodeError:
             continue
         if "ROUND" in filename:
-            print(filename)
+            # print(filename)
             if "TAC1" in filename:
                 tournament_id = 4
             elif "TAE21" in filename:
@@ -106,14 +106,14 @@ def fillMatches():
             elif "TBS2" in filename:
                 tournament_id = 7
             
-            print("#\n"*10+str(tournament_id)+"#\n"*10)
+            # print("#\n"*10+str(tournament_id)+"#\n"*10)
             
             filename = ''.join(i for i in filename.split() if i not in strip_list)
-            print(filename)
+            # print(filename)
             if "MEN" in filename:
                 round = filename.strip("MEN.csv")
-                print(round)
-                print(df)
+                # print(round)
+                # print(df)
                 for index,row in df.iterrows():
                     if row["Score Player A"]>3 or row["Score Player B"]>3 or row["Score Player A"]+row["Score Player B"]>5 or row["Score Player A"]+row["Score Player B"]<3:
                         error_counter+=1
@@ -122,11 +122,12 @@ def fillMatches():
                     else:
                         winner = int(str(row["Player B"]).strip("MP"))
                     new_match=Match(fkplayer_1=int(str(row["Player A"]).strip("MP")),fkplayer_2=int(str(row["Player B"]).strip("MP")),score_player1=row["Score Player A"],score_player2=row["Score Player B"],fkwinner=winner,round=round,fktournament=tournament_id)   
-                    new_match.givePoints()             
+                    new_match.givePoints()  
+                    new_match.givePrizes()           
             elif "LADIES" in filename:
                 round = filename.strip("LADIES.csv")
-                print(round)
-                print(df)
+                # print(round)
+                # print(df)
                 for index, row in df.iterrows():
                     # if row["Score Player A"]>=3 or row["Score Player B"]>=3:
                     #         error_counter+=1
@@ -137,6 +138,7 @@ def fillMatches():
                         winner = int(str(row["Player B"]).strip("FP"))
                     new_match=Match(fkplayer_1=int(str(row["Player A"]).strip("FP"))+32,fkplayer_2=int(str(row["Player B"]).strip("FP"))+32,score_player1=row["Score Player A"],score_player2=row["Score Player B"],fkwinner=winner+32,round=round,fktournament=tournament_id)
                     new_match.givePoints()
+                    new_match.givePrizes()
                     pass
     print(f"error_counter:{error_counter}")
 fillPlayers()
