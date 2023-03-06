@@ -261,6 +261,23 @@ class Tournament:
     def getPrizeMoney(self):
         return self.prize_money
 
+    def checkDuplicate(self):
+        pass
+    
+    def getBracket(self, gender):
+        all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
+        all_matches = all_matches.order_by(Matches.round.asc())
+        count=0
+        leaderboard=[]
+        for i in all_matches:
+            player=Player(player_id=i.fkplayer1)
+            if player.getGender()==gender:
+                match_to_add = Match(match_id=i.match_id)
+                leaderboard.append(match_to_add)
+        return leaderboard
+        pass
+    
+    
     def commitToDB(self):
         self.main.tournament_id = self.tournament_id
         self.main.name = self.name
@@ -268,13 +285,6 @@ class Tournament:
         self.main.prize_money = self.prize_money
         session.commit()
         
-    def checkDuplicate(self):
-        pass
-    
-    def getResult(self):
-        all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
-        print(all_matches[0].round)
-        pass
 
 class Player:
     def __init__(self, player_id = -1, player_name = "", gender = "", points = 0, prize_money = 0, new_entry=False):
@@ -364,10 +374,41 @@ class Player:
         # print("#\n"*10+self.player_id+"\n"+self.player_name+"\n"+self.gender+"\n"+self.points+"\n"+self.prize_money+"\n"+"#\n"*10)
         session.commit()
 
+def getLeaderboard(gender):
+    array_of_players=[]
+    if gender == "Male":
+        all_players = session.query(Players).filter_by(gender = "Male")
+        all_players = all_players.order_by(Players.points.desc())
+        for i in all_players:
+            player = Player(player_id=i.player_id)
+            array_of_players.append(player)
+        return array_of_players
+    elif gender == "Female":
+        all_players = session.query(Players).filter_by(gender = "Female")
+        all_players = all_players.order_by(Players.points.desc())
+        for i in all_players:
+            player = Player(player_id=i.player_id)
+            array_of_players.append(player)
+        return array_of_players
+    else:
+        return
+
+
 directory = os.fsencode("Tennis Tournament Data")
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
     # print(filename)
-# test = Tournament(tournament_id=5)
-# test.getResult()
+test = Tournament(tournament_id=5)
+array=test.getBracket("Female")
+for i in array:
+    print(i.getRound())
+array = getLeaderboard("Male")
+count = 0
+money= 0
+for i in array:
+    count+=1
+    print(f"Ranking {count}: {i.getPoints()}")
+    money +=i.getPrizeMoney()
+    
+print(f"total prize money:{money}")
 
