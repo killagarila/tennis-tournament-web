@@ -16,7 +16,8 @@
                         <div class="dropdown-content navwidth">
                             <form action="/tournament" method="POST">
                                 {% for tournament in tournaments %}
-                                    <input type="submit" class="tournselbutton" value="{{tournament}}" name="tournselb"></button>
+                                    <input type="submit" class="tournselbutton" value="{{tournament}} M" name="tournselb"></button>
+                                    <input type="submit" class="tournselbutton" value="{{tournament}} W" name="tournselb"></button>
                                 {% endfor %}
                             </form>
                         </div>

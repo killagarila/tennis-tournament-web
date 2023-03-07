@@ -34,7 +34,9 @@ def getTournaments():
 @app.route('/')
 def homepage():
     print("homepage is open...")
+    #Getting tournaments for dropdown selection
     tournaments=getTournaments()
+    #Getting details to display for leadboards
     return render_template('p1.html',tournaments=tournaments)
 @app.route('/newmatch',methods=["GET","POST"])
 def newMatch():
@@ -97,12 +99,37 @@ def newMatchForm():
 
 @app.route('/tournament',methods=["GET","POST"])
 def viewTournament():
-    if request.method=="POST":
+    tournaments=getTournaments()
+    if request.method=="POST": #
+        session=DBSession()
         selectedT=request.form['tournselb']
         print(selectedT)
-        #Getting list of players from selected tournament
-        print("viewing details of tournament")
-    return render_template('tournament.html')
+        genderSel=selectedT[-1]
+        selectedT=selectedT.rsplit(' ',1)[0]
+        print(selectedT)
+        if genderSel=="M":
+            print("Mens tourney")
+            #Get all rounds for men
+            tournament = getTournamentbyName(selectedT)
+            print(tournament)
+            bracket=tournament.getBracket("Male")
+            #After getting bracket sort objects based on round
+        elif genderSel=="W":
+            print("Womens tourney")
+            tournament = getTournamentbyName(selectedT)
+            #print(tournament)
+            bracket=tournament.getBracket("Female")
+            print("Bracket returns")
+            print(bracket)
+        #After getting objects sort based on round
+        matchdata=[]
+        for match in bracket:
+            m={'round': match.getRound(),'p1': match.getFkPlayer1(),'p1score':match.getScorePlayer1(),'p2':match.getFkPlayer2(),'p2score':match.getScorePlayer2()}
+            matchdata.append(m)
+        print(matchdata)
+
+    #print(matches)
+    return render_template('tournament.html',tournaments=tournaments,matchdata=matchdata)
     
 #Finding an empty port
 if __name__ == '__main__':
