@@ -3,7 +3,7 @@ from sqlalchemy import Table, Column, ForeignKey, Integer, String, Float, Enum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine 
-from sqlalchemy_enum34 import EnumType
+# from sqlalchemy_enum34 import EnumType
 
 Base = declarative_base()
 
