@@ -3,10 +3,20 @@
     <head>
         <title>Tennis-Tournament</title>
         <link rel="StyleSheet" href="{{ url_for('static', filename='stylesheet.css') }}" type="text/css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='datatables.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='datatables.min.css') }}">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+       <script>
+        $(document).ready(function () {
+            $('table.display').DataTable();
+        });
+       </script>
+
     </head>
     <body>
+        
         <div class="background-up">
             <nav>
                 <div class="navbar">
@@ -28,72 +38,101 @@
             <div>
                 <div class="board lfloat">
                     <p class="boardtitle">Mens leaderboard:</p>
-                    <table class="boardtable">
+
+
+                    
+                        
+                    <table id="male_leaders" class="display" style="width:100%">
+                    <thead>
                         <tr>
                             <th>Position:</th>
                             <th>Name: </th>
                             <th>Total Points:</th>
                         </tr>
-                        {% for row in rows %}
+                    </thead>
+                    <tbody>  
+                        {% for male_leader in male_leaders %}
+                        {% set outerloop = loop %}
                             <tr>
-                                <th> {{row[1]}} </th>  <!-- position in leaderboard -->
-                                <th> {{row[2]}} </th> <!-- Name of Player -->
-                                <th> {{row[3]}} </th> <!-- Points earned by Player -->
+                                <td> {{ outerloop.index }} </td> 
+                                <td> {{male_leader.name}} </td> 
+                                <td> {{male_leader.points}} </td> 
                             </tr>
+                        
                         {% endfor %}
+                    </tbody>   
                     </table>
+
+                    
                 </div>
                 <div class="board rfloat">
                     <p class="boardtitle">Mens Earnings:</p>
-                    <table class="boardtable">
+                    <table id="male_earners" class="display" style="width:100%">
+                        <thead>
                         <tr>
                             <th>Position:</th>
                             <th>Name: </th>
-                            <th>Total Points:</th>
+                            <th>Total Earnings:</th>
                         </tr>
-                        {% for row2 in row2s %}
+                    </thead>
+                    <tbody> 
+                        {% for male_earner in male_earners %}
+                        {% set outerloop = loop %}
                             <tr>
-                                <th> {{row2[1]}} </th>  <!-- position in leaderboard -->
-                                <th> {{row2[2]}} </th> <!-- Name of Player -->
-                                <th> {{row2[3]}} </th> <!-- Points earned by Player -->
+                                <td> {{outerloop.index}} </td>  <!-- position in leaderboard -->
+                                <td> {{male_earner.name}} </td> <!-- Name of Player -->
+                                <td> {{male_earner.prize_money}} </td> <!-- Points earned by Player -->
                             </tr>
                         {% endfor %}
+                    </tbody> 
                     </table>
                 </div>
             </div>
             <div>
                 <div class="board lfloat">
                     <p class="boardtitle">Womans leaderboard:</p>
-                    <table class="boardtable">
+                    <table id="FEMALE_POS" class="display">
+                    <thead>
                         <tr>
-                            <th>Position:</th>
-                            <th>Name: </th>
-                            <th>Total Points:</th>
+                            <th data-field="position" data-sortable="true">Position:</th>
+                            <th data-field="name" data-sortable="true">Name: </th>
+                            <th data-field="points" data-sortable="true">Total Points:</th>
                         </tr>
-                        {% for row3 in row3s %}
+                    </thead>
+                
+                    <tbody>  
+                        {% for female_leader in female_leaders %}
+                        {% set outerloop = loop %}
                             <tr>
-                                <th> {{row3[1]}} </th>  <!-- position in leaderboard -->
-                                <th> {{row3[2]}} </th> <!-- Name of Player -->
-                                <th> {{row3[3]}} </th> <!-- Points earned by Player -->
+                                <td> {{ outerloop.index }} </td> 
+                                <td> {{female_leader.name}} </td> 
+                                <td> {{female_leader.points}} </td> 
                             </tr>
+                        
                         {% endfor %}
+                    </tbody>   
                     </table>
                 </div>
                 <div class="board rfloat">
                     <p class="boardtitle">Womans Earnings:</p>
-                    <table class="boardtable">
+                    <table id="female_earners" class="display" style="width:100%">
+                        <thead>
                         <tr>
                             <th>Position:</th>
                             <th>Name: </th>
-                            <th>Total Points:</th>
+                            <th>Total Earnings:</th>
                         </tr>
-                        {% for row4 in row4s %}
+                    </thead>
+                    <tbody> 
+                        {% for female_earner in female_earners %}
+                        {% set outerloop = loop %}
                             <tr>
-                                <th> {{row4[1]}} </th>  <!-- position in leaderboard -->
-                                <th> {{row4[2]}} </th> <!-- Name of Player -->
-                                <th> {{row4[3]}} </th> <!-- Points earned by Player -->
+                                <td> {{outerloop.index}} </td>  <!-- position in leaderboard -->
+                                <td> {{female_earner.name}} </td> <!-- Name of Player -->
+                                <td> {{female_earner.prize_money}} </td> <!-- Points earned by Player -->
                             </tr>
                         {% endfor %}
+                    </tbody> 
                     </table>
                 </div>
             </div>

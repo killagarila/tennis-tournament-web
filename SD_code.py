@@ -180,8 +180,8 @@ class Match:
         tournament = Tournament(tournament_id=self.fktournament)
         player = Player(player_id=loser)
         prize_money_arr=tournament.getPrizeMoney()
-        print(prize_money_arr)
-        print(prize_money_arr[0])
+        #print(prize_money_arr)
+        #print(prize_money_arr[0])
         player.addPrizeMoney(int(prize_money_arr[prize_dict[self.round]]))
         player.commitToDB()
         if self.round==5:
@@ -375,8 +375,10 @@ class Player:
         session.commit()
 
 def getLeaderboard(gender):
+    print("get leaderboard running")
     array_of_players=[]
     if gender == "Male":
+        print("GETTING MALE")
         all_players = session.query(Players).filter_by(gender = "Male")
         all_players = all_players.order_by(Players.points.desc())
         for i in all_players:
@@ -397,7 +399,7 @@ def getLeaderboard(gender):
 directory = os.fsencode("Tennis Tournament Data")
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
-    # print(filename)
+    print(filename)
 test = Tournament(tournament_id=5)
 array=test.getBracket("Female")
 for i in array:

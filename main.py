@@ -15,10 +15,10 @@ DBSession = sessionmaker(bind=engine)
 #====================================#
 def getTournaments():
     session = DBSession()
-    print("new match is running")    
+    #print("new match is running")    
     #Fetching tournaments from database
     tournaments=session.query(Tournaments.name).all()
-    print(tournaments)
+    #print(tournaments)
     #Changing for readabiltiy
     tournaments=list(tournaments)
     z=0
@@ -30,12 +30,40 @@ def getTournaments():
         z=z+1
     session.close()
     return tournaments
+
+
+
+def p1Leaderboard(gender, qtype):
+    session = DBSession()
+    if gender == "Male":
+        all_players = session.query(Players).filter_by(gender = "Male")
+        if qtype == "leaderboard":
+            all_players = all_players.order_by(Players.points.desc())
+        elif qtype == "earnings":
+            all_players = all_players.order_by(Players.prize_money.desc())
+        return all_players
+    elif gender == "Female":
+        all_players = session.query(Players).filter_by(gender = "Female")
+        if qtype == "leaderboard":
+            all_players = all_players.order_by(Players.points.desc())
+        elif qtype == "earnings":
+            all_players = all_players.order_by(Players.prize_money.desc())  
+        return all_players
+    else:
+        return
+    
+
+
 #Creating routes for website
 @app.route('/')
 def homepage():
-    print("homepage is open...")
+    #print("homepage is open...")
     tournaments=getTournaments()
-    return render_template('p1.html',tournaments=tournaments)
+    male_leaders=p1Leaderboard("Male", "leaderboard")
+    female_leaders=p1Leaderboard("Female", "leaderboard")
+    male_earners=p1Leaderboard("Male", "earnings")
+    female_earners=p1Leaderboard("Female", "earnings")
+    return render_template('p1.html',tournaments=tournaments, male_leaders=male_leaders, male_earners=male_earners, female_leaders=female_leaders, female_earners=female_earners)
 @app.route('/newmatch',methods=["GET","POST"])
 def newMatch():
     tournaments=getTournaments()
@@ -54,7 +82,7 @@ def newMatchForm():
     player2score=request.form['p2score']
     tournamentSel=request.form['tournsel']
     tround=request.form['tround']
-    print(tournamentSel)
+    #print(tournamentSel)
     
     player1 = session.query(Players).filter_by(name=player1name)
     player2 = session.query(Players).filter_by(name=player2name)
