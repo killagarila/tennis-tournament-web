@@ -177,15 +177,15 @@ html, body {
 
   /* CSS below is for the tournament table */
   #container { 
-    width: 800px; 
-    height: 600px; 
-    float: left; 
+    width: fit-content; 
+    height: 1200px; 
+    
 }
 
 section { 
     width: 110px; 
-    height: 520px; 
-    float: left;
+    height: 1100px; 
+    float: left;  
 }
 
 section > div { 
@@ -235,11 +235,11 @@ section > div:nth-child(2n) {
     margin-top: 55px; 
 }
 
-#QFinal > div { 
+#round-2 > div { 
     margin-top: 91px; 
 }
 
-#QFinal > div:first-child { 
+#round-2 > div:first-child { 
     margin-top: 37px; 
 }
 
@@ -259,10 +259,10 @@ section > div:nth-child(2n) {
 #line2 div:first-child { 
     margin-top: 125px; 
 }
-#SFinal > div { 
+#QFinal > div { 
     margin-top: 230px; 
 }
-#SFinal > div:first-child { 
+#QFinal > div:first-child { 
     margin-top: 105px; 
 }
 
@@ -283,11 +283,11 @@ section > div:nth-child(2n) {
   margin-top: 530px; 
 }
 
-#final > div { 
+#SFinal > div { 
   margin-top: 250px; 
 }
 
-#final > div:last-child { 
+#SFinal > div:last-child { 
   margin-top: 490px; 
 }
 
@@ -309,9 +309,12 @@ section > div:nth-child(2n) {
   /* background-color: white; Colour of the div behind tournament table */
   padding: 5px;
   height: 100%;
-  width: fit-content;
-  position:fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
 }
+
+.textalignleft{
+  text-align: left;
+}
+
