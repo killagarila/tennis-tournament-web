@@ -62,7 +62,7 @@ class Match:
     def setFkPlayer1(self, fkplayer_1):
         self.fkplayer1 = fkplayer_1
     
-    def setFPlayer2(self, fkplayer_2):
+    def setFkPlayer2(self, fkplayer_2):
         self.fkplayer_2 = fkplayer_2
     
     def setRound(self, round):
@@ -109,6 +109,14 @@ class Match:
     
     def getFkPlayer2(self):
         return self.fkplayer_2
+    
+    def getPlayer1Name(self):
+        player = Player(player_id=self.fkplayer1)
+        return player.getPlayerName()
+    
+    def getPlayer2Name(self):
+        player = Player(player_id=self.fkplayer_2)
+        return player.getPlayerName()
     
     def getScorePlayer1(self):
         return self.score_player1
@@ -269,7 +277,10 @@ class Tournament:
         all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
         all_matches = all_matches.order_by(Matches.round.asc())
         count=0
-        leaderboard=[]
+        leaderboard1=[]
+        leaderboard2=[]
+        leaderboard3=[]
+        leaderboard4=[]
         for i in all_matches:
             player=Player(player_id=i.fkplayer1)
             if player.getGender()==gender:
