@@ -273,10 +273,10 @@ class Tournament:
         for i in all_matches:
             player=Player(player_id=i.fkplayer1)
             if player.getGender()==gender:
+                print(gender)
                 match_to_add = Match(match_id=i.match_id)
                 leaderboard.append(match_to_add)
         return leaderboard
-        pass
     
     
     def commitToDB(self):
@@ -404,22 +404,6 @@ def getLeaderboard(gender):
 # for file in os.listdir(directory):
 #     filename = os.fsdecode(file)
     # print(filename)
-test = Tournament(tournament_id=5)
-array=test.getBracket("Female")
-for i in array:
-    print(f"round:{i.getRound()}")
-    print(f"Player1:{i.getFkPlayer1()}")
-    print(f"Player2:{i.getFkPlayer2()}")
-    print("\n", end="")
-array = getLeaderboard("Male")
-count = 0
-money= 0
-for i in array:
-    count+=1
-    print(f"Ranking {count}: {i.getPoints()}")
-    money +=i.getPrizeMoney()
-    
-print(f"total prize money:{money}")
-tournament = getTournamentbyName("TAW11")
-print(tournament.getName())
+#
 
+session.close()
