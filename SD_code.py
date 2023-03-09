@@ -277,10 +277,7 @@ class Tournament:
         all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
         all_matches = all_matches.order_by(Matches.round.asc())
         count=0
-        leaderboard1=[]
-        leaderboard2=[]
-        leaderboard3=[]
-        leaderboard4=[]
+        leaderboard=[]
         for i in all_matches:
             player=Player(player_id=i.fkplayer1)
             if player.getGender()==gender:
