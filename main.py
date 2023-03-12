@@ -137,23 +137,20 @@ def viewTournament():
             print("Mens tourney")
             #Get all rounds for men
             tournament = getTournamentbyName(selectedT)
-            print(tournament)
+            #print(tournament)
             bracket=tournament.getBracket("Male")
-            print("ismale")
+            #print("ismale")
             #After getting bracket sort objects based on round
         elif genderSel=="W":
             print("Womens tourney")
             tournament = getTournamentbyName(selectedT)
             #print(tournament)
             bracket=tournament.getBracket("Female")
-            print("Bracket returns")
-            print(bracket)
+            #print("Bracket returns")
+            #print(bracket)
             print("is woman")
         #After getting objects sort based on round
         matchdata=[]
-        for match in bracket:
-            m={'r': match.getRound(),'p1': match.getFkPlayer1(),'p1score':match.getScorePlayer1(),'p2':match.getFkPlayer2(),'p2score':match.getScorePlayer2()}
-            matchdata.append(m)
         print(matchdata)
         #Creating multiple lists to return for ease
         round1matches=[]
@@ -162,24 +159,18 @@ def viewTournament():
         round4matches=[]
         round5matches=[]
         #Probably ineffiecient but it works?
-        for match in matchdata:
-            print(match)
-            if match.get('r')==1:
-                print("first round")
+        for match in bracket:
+            if match.getRound()==1:
                 round1matches.append(match)
-            elif match.get('r')==2:
-                print("second round")
+            elif match.getRound()==2:
                 round2matches.append(match)
-            elif match.get('r')==3:
-                print("third round")
+            elif match.getRound()==3:
                 round3matches.append(match)
-            elif match.get('r')==4:
-                print("fourth round")
+            elif match.getRound()==4:
                 round4matches.append(match)
-            elif match.get('r')==5:
-                print("fifth round")
+            elif match.getRound()==5:
                 round5matches.append(match)
-            print(len(round1matches))
+            
         session.close()
     return render_template('tournament.html',bracket=bracket,tournaments=tournaments,round1matches=round1matches,round2matches=round2matches,round3matches=round3matches,round4matches=round4matches,round5matches=round5matches)
     
