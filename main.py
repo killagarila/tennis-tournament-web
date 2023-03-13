@@ -15,10 +15,10 @@ DBSession = sessionmaker(bind=engine)
 #====================================#
 def getTournaments():
     session = DBSession()
-    print("new match is running")    
+    #print("new match is running")    
     #Fetching tournaments from database
     tournaments=session.query(Tournaments.name).all()
-    print(tournaments)
+    #print(tournaments)
     #Changing for readabiltiy
     tournaments=list(tournaments)
     z=0
@@ -30,14 +30,40 @@ def getTournaments():
         z=z+1
     session.close()
     return tournaments
+
+
+
+def p1Leaderboard(gender, qtype):
+    session = DBSession()
+    if gender == "Male":
+        all_players = session.query(Players).filter_by(gender = "Male")
+        if qtype == "leaderboard":
+            all_players = all_players.order_by(Players.points.desc())
+        elif qtype == "earnings":
+            all_players = all_players.order_by(Players.prize_money.desc())
+        return all_players
+    elif gender == "Female":
+        all_players = session.query(Players).filter_by(gender = "Female")
+        if qtype == "leaderboard":
+            all_players = all_players.order_by(Players.points.desc())
+        elif qtype == "earnings":
+            all_players = all_players.order_by(Players.prize_money.desc())  
+        return all_players
+    else:
+        return
+    
+
+
 #Creating routes for website
 @app.route('/')
 def homepage():
-    print("homepage is open...")
-    #Getting tournaments for dropdown selection
+    #print("homepage is open...")
     tournaments=getTournaments()
-    #Getting details to display for leadboards
-    return render_template('p1.html',tournaments=tournaments)
+    male_leaders=p1Leaderboard("Male", "leaderboard")
+    female_leaders=p1Leaderboard("Female", "leaderboard")
+    male_earners=p1Leaderboard("Male", "earnings")
+    female_earners=p1Leaderboard("Female", "earnings")
+    return render_template('p1.html',tournaments=tournaments, male_leaders=male_leaders, male_earners=male_earners, female_leaders=female_leaders, female_earners=female_earners)
 @app.route('/newmatch',methods=["GET","POST"])
 def newMatch():
     tournaments=getTournaments()
@@ -56,7 +82,7 @@ def newMatchForm():
     player2score=request.form['p2score']
     tournamentSel=request.form['tournsel']
     tround=request.form['tround']
-    print(tournamentSel)
+    #print(tournamentSel)
     
     player1 = session.query(Players).filter_by(name=player1name)
     player2 = session.query(Players).filter_by(name=player2name)
@@ -111,25 +137,42 @@ def viewTournament():
             print("Mens tourney")
             #Get all rounds for men
             tournament = getTournamentbyName(selectedT)
-            print(tournament)
+            #print(tournament)
             bracket=tournament.getBracket("Male")
+            #print("ismale")
             #After getting bracket sort objects based on round
         elif genderSel=="W":
             print("Womens tourney")
             tournament = getTournamentbyName(selectedT)
             #print(tournament)
             bracket=tournament.getBracket("Female")
-            print("Bracket returns")
-            print(bracket)
+            #print("Bracket returns")
+            #print(bracket)
+            print("is woman")
         #After getting objects sort based on round
         matchdata=[]
-        for match in bracket:
-            m={'round': match.getRound(),'p1': match.getFkPlayer1(),'p1score':match.getScorePlayer1(),'p2':match.getFkPlayer2(),'p2score':match.getScorePlayer2()}
-            matchdata.append(m)
         print(matchdata)
-
-    #print(matches)
-    return render_template('tournament.html',tournaments=tournaments,matchdata=matchdata)
+        #Creating multiple lists to return for ease
+        round1matches=[]
+        round2matches=[]
+        round3matches=[]
+        round4matches=[]
+        round5matches=[]
+        #Probably ineffiecient but it works?
+        for match in bracket:
+            if match.getRound()==1:
+                round1matches.append(match)
+            elif match.getRound()==2:
+                round2matches.append(match)
+            elif match.getRound()==3:
+                round3matches.append(match)
+            elif match.getRound()==4:
+                round4matches.append(match)
+            elif match.getRound()==5:
+                round5matches.append(match)
+            
+        session.close()
+    return render_template('tournament.html',bracket=bracket,tournaments=tournaments,round1matches=round1matches,round2matches=round2matches,round3matches=round3matches,round4matches=round4matches,round5matches=round5matches)
     
 #Finding an empty port
 if __name__ == '__main__':

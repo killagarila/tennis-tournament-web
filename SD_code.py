@@ -62,7 +62,7 @@ class Match:
     def setFkPlayer1(self, fkplayer_1):
         self.fkplayer1 = fkplayer_1
     
-    def setFPlayer2(self, fkplayer_2):
+    def setFkPlayer2(self, fkplayer_2):
         self.fkplayer_2 = fkplayer_2
     
     def setRound(self, round):
@@ -109,6 +109,14 @@ class Match:
     
     def getFkPlayer2(self):
         return self.fkplayer_2
+    
+    def getPlayer1Name(self):
+        player = Player(player_id=self.fkplayer1)
+        return player.getPlayerName()
+    
+    def getPlayer2Name(self):
+        player = Player(player_id=self.fkplayer_2)
+        return player.getPlayerName()
     
     def getScorePlayer1(self):
         return self.score_player1
@@ -180,8 +188,8 @@ class Match:
         tournament = Tournament(tournament_id=self.fktournament)
         player = Player(player_id=loser)
         prize_money_arr=tournament.getPrizeMoney()
-        # print(prize_money_arr)
-        # print(prize_money_arr[0])
+        #print(prize_money_arr)
+        #print(prize_money_arr[0])
         player.addPrizeMoney(int(prize_money_arr[prize_dict[self.round]]))
         player.commitToDB()
         if self.round==5:
@@ -273,10 +281,10 @@ class Tournament:
         for i in all_matches:
             player=Player(player_id=i.fkplayer1)
             if player.getGender()==gender:
+                print(gender)
                 match_to_add = Match(match_id=i.match_id)
                 leaderboard.append(match_to_add)
         return leaderboard
-        pass
     
     
     def commitToDB(self):
@@ -381,8 +389,10 @@ class Player:
 
 # Function to return an ordered list of all players of a specific list. Elements in list are Player objects and ordered by points
 def getLeaderboard(gender):
+    print("get leaderboard running")
     array_of_players=[]
     if gender == "Male":
+        print("GETTING MALE")
         all_players = session.query(Players).filter_by(gender = "Male")
         all_players = all_players.order_by(Players.points.desc())
         for i in all_players:
@@ -404,22 +414,6 @@ def getLeaderboard(gender):
 # for file in os.listdir(directory):
 #     filename = os.fsdecode(file)
     # print(filename)
-test = Tournament(tournament_id=5)
-array=test.getBracket("Female")
-for i in array:
-    print(f"round:{i.getRound()}")
-    print(f"Player1:{i.getFkPlayer1()}")
-    print(f"Player2:{i.getFkPlayer2()}")
-    print("\n", end="")
-array = getLeaderboard("Male")
-count = 0
-money= 0
-for i in array:
-    count+=1
-    print(f"Ranking {count}: {i.getPoints()}")
-    money +=i.getPrizeMoney()
-    
-print(f"total prize money:{money}")
-tournament = getTournamentbyName("TAW11")
-print(tournament.getName())
+#
 
+session.close()
