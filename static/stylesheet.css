@@ -216,10 +216,17 @@ section > div:nth-child(2n) {
 
 .conn div { 
     border: 1px solid #000; 
-    border-left: none; 
     height: 50px; 
     width: 100%; 
     margin: 80px 0 0 1px;
+}
+
+.br div { 
+  border-right: none; 
+}
+
+.bl div { 
+  border-left: none; 
 }
 
 .conn div:first-child { 
@@ -301,9 +308,14 @@ section > div:nth-child(2n) {
   margin-top: 530px; 
 }
 
-#winner {
-  margin-top: 500px;
+#line5 div {
+  margin-top: 580px; 
 }
+
+#Final > div:first-child {
+  margin-top: 510px;
+}
+
 
 .tournament-box{
   /* background-color: white; Colour of the div behind tournament table */
