@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, f
 import mysql.connector
 
 #Creating flask app
-app =Flask(__name__)
+app = Flask(__name__)
 app.secret_key='123' #Creating secret key
 
 #NEED TO ADD DATABASE FUNC HERE#
@@ -30,7 +30,10 @@ def getTournaments():
         z=z+1
     session.close()
     return tournaments
-
+#Splitting list function for displaying the correct matches
+def halflist(oldlist):
+    half = len(oldlist)//2
+    return oldlist[:half], oldlist[half:]
 
 
 def p1Leaderboard(gender, qtype):
@@ -161,6 +164,10 @@ def viewTournament():
         #Probably ineffiecient but it works?
         for match in bracket:
             if match.getRound()==1:
+                #every other match gets appended to diff list
+                #for match in bracket
+                #   if i%2==0:
+                #       
                 round1matches.append(match)
             elif match.getRound()==2:
                 round2matches.append(match)
@@ -170,9 +177,15 @@ def viewTournament():
                 round4matches.append(match)
             elif match.getRound()==5:
                 round5matches.append(match)
-            
+        #Splitting each list in half for ease of display
+        round1mp1,round1mp2=halflist(round1matches)
+        round2mp1,round2mp2=halflist(round2matches)
+        round3mp1,round3mp2=halflist(round3matches)
+        round4mp1,round4mp2=halflist(round4matches)
         session.close()
-    return render_template('tournament.html',bracket=bracket,tournaments=tournaments,round1matches=round1matches,round2matches=round2matches,round3matches=round3matches,round4matches=round4matches,round5matches=round5matches)
+        #TO FIX
+        #ODD NUMBERS GO INTO PART 1 LIST EVENS GO INTO PART 2
+    return render_template('tournament.html',bracket=bracket,tournaments=tournaments,round1mp1=round1mp1,round1mp2=round1mp2,round2mp1=round2mp1,round2mp2=round2mp2,round3mp1=round3mp1,round3mp2=round3mp2,round4mp1=round4mp1,round4mp2=round4mp2,round5matches=round5matches,round1matches=round1matches,round2matches=round2matches,round3matches=round3matches,round4matches=round4matches)
     
 #Finding an empty port
 if __name__ == '__main__':
