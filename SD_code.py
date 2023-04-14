@@ -284,7 +284,55 @@ class Tournament:
                 print(gender)
                 match_to_add = Match(match_id=i.match_id)
                 leaderboard.append(match_to_add)
+        print(f"Size:{len(leaderboard)}")
         return leaderboard
+
+    # def getBracket2(self,gender):
+    #     final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5)
+    #     print(final_match[0].fkwinner)
+    #     def getMatchByWinner(winner, round):
+    #         match_to_get = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=round)
+    #         match_obj = Match(match_id=match_to_get[0].match_id)
+    #         return match_obj
+    #     output = []
+    #     output.append(Match(match_id=final_match[0].fkplayer1))
+    #     # output.append(Match(match_id=final_match[0].fkplayer2))
+    #     # print(output[0].getFkPlayer1())
+    #     # print(output[1])
+    #     counter = 0
+    #     for i in range(5,1,-1):
+    #         size = len(output)
+    #         print("#"*40)
+    #         while counter < size:
+    #             print(f"fkplayer1: {output[counter].getFkPlayer1()}\nfkplayer2: {output[counter].getFkPlayer2()}")
+    #             output.append(getMatchByWinner(output[counter].getFkPlayer1(),i))
+    #             output.append(getMatchByWinner(output[counter].getFkPlayer2(),i))
+    #             print("zeby")
+    #             counter+=1
+    #     print(output)
+    #     print(len(output))
+    #     return output.reverse()
+    
+    def getBracket2(self,gender):
+        final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5)
+        output = []
+        output.append(Match(match_id=final_match[0].match_id))
+        match_counter=0
+        for i in range(4,0,-1):
+            size = len(output)
+            print(i)
+            # print("#"*40)
+            while match_counter < size:
+                output.append(self.getMatchByWinnerID(output[match_counter].getFkPlayer1(),i))
+                output.append(self.getMatchByWinnerID(output[match_counter].getFkPlayer2(),i))
+                match_counter += 1
+        return output
+                
+    def getMatchByWinnerID(self,winner,round):
+        match_to_get = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=round,fkwinner=winner)
+        match_to_get = Match(match_id=match_to_get[0].match_id)
+        print(match_to_get.getWinner())
+        return match_to_get
     
     
     def commitToDB(self):
@@ -415,5 +463,23 @@ def getLeaderboard(gender):
 #     filename = os.fsdecode(file)
     # print(filename)
 #
+tour = Tournament(tournament_id=4)
+bracket=tour.getBracket2("Male")
+bracket.reverse()
+for i in bracket:
+    print("#"*40)
+    print(i.getFkPlayer1())
+    print(i.getFkPlayer2())
+    print("#"*40, end="\n\n")
+# tour.getMatchByWinnerID(54,3)
+# arr1=tour.getBracket("Male")
+# arr=tour.getBracket2("Male")
+
+# for i in arr:
+#     print("#"*40)
+#     print(i.getPlayer1Name())
+#     print(i.getPlayer2Name())
+#     print(i.getWinner())
+#     print("#"*40, end="\n\n")
 
 session.close()
