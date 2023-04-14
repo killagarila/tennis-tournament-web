@@ -273,47 +273,7 @@ class Tournament:
         pass
     
     # Returns a sorted array based upon round for bracket display. First 8 elements are round 1 matches second 4 are round 2, and so on
-    def getBracket(self, gender):
-        all_matches = session.query(Matches).filter_by(fktournament=self.getTournament_id())
-        all_matches = all_matches.order_by(Matches.round.asc())
-        count=0
-        leaderboard=[]
-        for i in all_matches:
-            player=Player(player_id=i.fkplayer1)
-            if player.getGender()==gender:
-                print(gender)
-                match_to_add = Match(match_id=i.match_id)
-                leaderboard.append(match_to_add)
-        print(f"Size:{len(leaderboard)}")
-        return leaderboard
-
-    # def getBracket2(self,gender):
-    #     final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5)
-    #     print(final_match[0].fkwinner)
-    #     def getMatchByWinner(winner, round):
-    #         match_to_get = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=round)
-    #         match_obj = Match(match_id=match_to_get[0].match_id)
-    #         return match_obj
-    #     output = []
-    #     output.append(Match(match_id=final_match[0].fkplayer1))
-    #     # output.append(Match(match_id=final_match[0].fkplayer2))
-    #     # print(output[0].getFkPlayer1())
-    #     # print(output[1])
-    #     counter = 0
-    #     for i in range(5,1,-1):
-    #         size = len(output)
-    #         print("#"*40)
-    #         while counter < size:
-    #             print(f"fkplayer1: {output[counter].getFkPlayer1()}\nfkplayer2: {output[counter].getFkPlayer2()}")
-    #             output.append(getMatchByWinner(output[counter].getFkPlayer1(),i))
-    #             output.append(getMatchByWinner(output[counter].getFkPlayer2(),i))
-    #             print("zeby")
-    #             counter+=1
-    #     print(output)
-    #     print(len(output))
-    #     return output.reverse()
-    
-    def getBracket2(self,gender):
+    def getBracket(self,gender):
         final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5)
         output = []
         output.append(Match(match_id=final_match[0].match_id))
@@ -464,7 +424,7 @@ def getLeaderboard(gender):
     # print(filename)
 #
 tour = Tournament(tournament_id=4)
-bracket=tour.getBracket2("Male")
+bracket=tour.getBracket("Male")
 bracket.reverse()
 for i in bracket:
     print("#"*40)
