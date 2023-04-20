@@ -197,7 +197,11 @@ class Match:
             player.addPrizeMoney(int(prize_money_arr[0]))
             # print(f"money to give to winner {prize_money_arr[0]}")
             player.commitToDB()
-    
+
+    def addMatch(self,newMatch):
+        session.add(newMatch)
+        session.commit()
+
     def commitToDB(self):
         self.main.match_id = self.match_id
         self.main.fkplayer1 = self.fkplayer1
