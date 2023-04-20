@@ -29,22 +29,10 @@
                 <article id="container">
                     <section>
                         <!-- First Round Players 1-16 -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {%for match in round1mp1%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
                     
                     <div class="conn bl"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -52,14 +40,10 @@
                     
                     <section id="round-2">
                         <!-- Second Round Players 1-8 -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {%for match in round2mp1%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
                     
                     <div class="conn bl" id="conn2"><div></div><div></div><div></div><div></div></div>
@@ -67,19 +51,20 @@
                     
                     <section id="QFinal">
                         <!-- Third Round Players 1-4 -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {%for match in round3mp1%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
                     
                     <div class="conn bl" id="conn3"><div></div><div></div></div>
                     <div class="line" id="line3"><div></div><div></div></div>
                     
                     <section id="SFinal">
-                        <!-- SFinal Round Players 1-2 -->
-                        <div></div>
-                        <div></div>
+                        {%for match in round4mp1%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
 
                     <div class="conn bl" id="conn4"><div></div></div>
@@ -87,8 +72,10 @@
 
                     <section id="Final">
                         <!-- SFinal Round Players 1-2 -->
-                        <div></div>
-                        <div></div>
+                        {%for match in round5matches%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
 
 
@@ -97,8 +84,10 @@
 
                     <section id="SFinal">
                         <!-- SFinal Round Players 3-4 -->
-                        <div></div>
-                        <div></div>
+                        {%for match in round4mp2%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
 
                     <div class="line" id="line3"><div></div><div></div></div>
@@ -106,10 +95,10 @@
 
                     <section id="QFinal">
                         <!-- Third Round Players 5-8 -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {%for match in round3mp2%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
 
                     <div class="line" id="line2"><div></div><div></div><div></div><div></div></div>
@@ -117,14 +106,10 @@
 
                     <section id="round-2">
                         <!-- Second Round Players 9-16 -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {%for match in round2mp2%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
 
                     <div class="line"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -132,22 +117,10 @@
 
                     <section>
                         <!-- First Round Players 17-32 -->
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        {%for match in round1mp2%}
+                        <div>{{match.getPlayer1Name()}} {{match.getScorePlayer1()}}</div>
+                        <div>{{match.getPlayer2Name()}} {{match.getScorePlayer2()}}</div>
+                        {%endfor%}
                     </section>
                 </article>
             </div>
