@@ -83,8 +83,9 @@ html, body {
     height: 1000px;
     background-repeat: no-repeat;
     background-attachment:fixed;
+    background-position: 50%;
     background-size: cover; 
-    background-image: linear-gradient(to bottom, rgba(53,53,53,0), rgba(205,198,165,1) 50%), url('bkg_image1.jpg'); /* background image at top of webpage */
+    background-image: linear-gradient(to bottom, rgba(53,53,53,0), rgba(205,198,165,1) 50%), url('pexels-athena-2961964.jpg'); /* background image at top of webpage */
   }
   .navwidth {
     width: 150px;
@@ -190,10 +191,10 @@ section {
 
 section > div { 
     width: 80px; 
-    height: 20px; 
+    height: 20px;
     border: 1px solid #000;  /* Border colour of box in tournament table */
     margin: 9px 0; 
-    background: #73789F; /* Background of box in tournament table */
+    background: rgb(75, 138, 86); /* Background of box in tournament table */
     color: white; 
     padding: 10px 10px 10px 20px;
 }
@@ -215,10 +216,10 @@ section > div:nth-child(2n) {
 }
 
 .conn div { 
-    border: 1px solid #000; 
+    border: 4px solid #000; 
     height: 50px; 
     width: 100%; 
-    margin: 80px 0 0 1px;
+    margin: 75px 0 0 1px;
 }
 
 .br div { 
@@ -234,8 +235,8 @@ section > div:nth-child(2n) {
 }
 
 .line div { 
-    border-top: 1px solid #000; 
-    margin: 133px 0 0 1px; 
+    border-top: 4px solid #000; 
+    margin: 129px 0 0 1px; 
 }
 
 .line div:first-child { 
@@ -252,7 +253,7 @@ section > div:nth-child(2n) {
 
 #conn2 div { 
     margin-top: 133px; 
-    height: 133px;
+    height: 127px;
 }
 
 #conn2 div:first-child { 
