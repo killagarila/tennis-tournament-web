@@ -88,13 +88,20 @@ def newMatch():
         tournamentSel=request.form['tournsel']
         tround=request.form['tround']
         #print(tournamentSel)
-        
+        if "MP" not in player1name or "FP" not in player1name or "MP" not in player2name or "FP" not in player2name:
+            # error = "Invalid player name"
+            return redirect(url_for('newMatch')) 
         player1 = session.query(Players).filter_by(name=player1name).scalar()
         player2 = session.query(Players).filter_by(name=player2name).scalar()
         fktour = session.query(Tournaments).filter_by(name = tournamentSel).scalar()
         print(fktour.tournament_id)
+        if player1==None or player2==None:
+            print("zeby")
+            error="Player names do not exist"
+            return error, redirect(url_for('newMatch'))
         #Validating data inputaddmatch
         if player1score==player2score:
+            print("a7a")
             error="Player scores cannot be the same"
             return error,redirect(url_for('newMatch'))
         if player1score > player2score:
@@ -102,21 +109,37 @@ def newMatch():
         elif player2score > player1score:
             winner=player2.player_id
         elif player1score==player2score:
+            
             error="Player scores cannot be the same"
             return error,redirect(url_for('newMatch'))
         #Validating score based on gender of tournament
         if player1.gender == player2.gender:
             if player1.gender == 'Male':
+                print(int(player1score+player2score))
+                # if int(player1score+player2score)>5:
+                #     print("kys")
+                #     return redirect(url_for('newMatch'))
+                # if player1score!="3" and player2score!="3":
+                #     print("kill me")
+                #     return redirect(url_for('newMatch'))
+                new_match = session.query(Matches).filter(fkplayer1=player1.player_id, fkplayer2=player2.player_id,round=int(tround)).scalar()   
+                print(type(new_match))
+                if type(new_match)!=None:
+                    error="Match already exists"
+                    return redirect(url_for('newMatch'))
+                print("here")
                 if int(player1score+player2score)<=5 or int(player1score+player2score)>=3:
                     if player1score=="3" or player2score=="3":
                         newMatch=Match(fkplayer_1=int(player1.player_id),fkplayer_2=int(player2.player_id),score_player1=int(player1score),score_player2=int(player2score),fkwinner=int(winner),fktournament=int(fktour.tournament_id),round=int(tround))
                     else:
+                        print("leh")
                         return redirect(url_for('newMatch'))
             elif player2.gender == 'Female':
                 if int(player1score+player2score)<=3 or int(player1score+player2score)>=2:
                     if player1score=="2" or player2score=="2":
                         newMatch=Match(fkplayer_1=int(player1.player_id),fkplayer_2=int(player2.player_id),score_player1=int(player1score),score_player2=int(player2score),fkwinner=int(winner),fktournament=int(fktour.tournament_id),round=int(tround))
                     else:
+                        print("why")
                         return error, redirect(url_for('newMatch'))
         else:
             error="Player genders must be the same"
@@ -144,6 +167,8 @@ def viewTournament():
             tournament = getTournamentbyName(selectedT)
             #print(tournament)
             bracket=tournament.getBracket("Male")
+            print("I am here")
+            # print(bracket[0].get)
             #print("ismale")
             #After getting bracket sort objects based on round
         elif genderSel=="W":

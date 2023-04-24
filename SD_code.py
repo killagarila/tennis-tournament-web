@@ -37,7 +37,15 @@ class Match:
     def __init__(self, match_id = -1, fkplayer_1 = 0, fkplayer_2 = 0, score_player1 = 0, score_player2 = 0, fkwinner=0, fktournament=0, round=1):
         
         if match_id == -1:
-            self.main = Matches(score_player1 = score_player1, score_player2 = score_player2, fkplayer1 = fkplayer_1, fkplayer2=fkplayer_2,fkwinner=fkwinner,fktournament=fktournament, round = round)
+            player1 = session.query(Players).filter(Players.player_id==fkplayer_1)
+            if type(player1) == None:
+                self.check_existance = False
+                return
+            if player1[0].gender == "Female":
+                self.main = Matches(score_player1 = score_player1, score_player2 = score_player2, fkplayer1 = fkplayer_1, fkplayer2=fkplayer_2,fkwinner=fkwinner,fktournament=fktournament, round = round, gender="Female")
+            else:
+                self.main = Matches(score_player1 = score_player1, score_player2 = score_player2, fkplayer1 = fkplayer_1, fkplayer2=fkplayer_2,fkwinner=fkwinner,fktournament=fktournament, round = round, gender="Male")
+
             session.add(self.main)
             session.commit()
         else:
@@ -45,7 +53,8 @@ class Match:
             try:
                 print(self.main.fkwinner)
             except AttributeError:
-                del self
+                self.check_existance = False
+                return
         self.match_id = self.main.match_id
         self.fkplayer1 = self.main.fkplayer1
         self.fkplayer_2 = self.main.fkplayer2
@@ -54,6 +63,8 @@ class Match:
         self.fkwinner = self.main.fkwinner
         self.fktournament = self.main.fktournament
         self.round = self.main.round
+        self.check_existance = True
+        self.gender = self.main.gender
 
     ###setters
     def setMatchID(self, match_id):
@@ -278,23 +289,40 @@ class Tournament:
     
     # Returns a sorted array based upon round for bracket display. First 8 elements are round 1 matches second 4 are round 2, and so on
     def getBracket(self,gender):
-        final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5)
+        if gender == "Male":
+            print(f"tour_id:{self.getTournament_id()}")
+            final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5, gender = "Male")
+            print("kill us")
+            print(final_match[0].gender)
+        if gender == "Female":
+            print(f"tour_id:{self.getTournament_id()}")
+            final_match = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=5, gender = "Female")
+            print("kill us")
+            print(final_match[0].fkplayer1)
         output = []
         output.append(Match(match_id=final_match[0].match_id))
+        print(output)
         match_counter=0
         for i in range(4,0,-1):
             size = len(output)
             print(i)
             # print("#"*40)
             while match_counter < size:
+                print(output)
                 output.append(self.getMatchByWinnerID(output[match_counter].getFkPlayer1(),i))
                 output.append(self.getMatchByWinnerID(output[match_counter].getFkPlayer2(),i))
                 match_counter += 1
         return output
                 
     def getMatchByWinnerID(self,winner,round):
-        match_to_get = session.query(Matches).filter_by(fktournament=self.getTournament_id(),round=round,fkwinner=winner)
-        match_to_get = Match(match_id=match_to_get[0].match_id)
+        print(f"round:{round}")
+        print(f"tourn_id:{self.getTournament_id()}")
+        print(f"winner:{winner}")
+        try:
+            match_to_get = session.query(Matches).filter(Matches.fktournament==self.getTournament_id(),Matches.round==round,Matches.fkwinner==winner)
+            match_to_get = Match(match_id=match_to_get[0].match_id)
+        except IndexError:
+            match_to_get = Match(match_id=83)
         print(match_to_get.getWinner())
         return match_to_get
     
@@ -427,14 +455,14 @@ def getLeaderboard(gender):
 #     filename = os.fsdecode(file)
     # print(filename)
 #
-tour = Tournament(tournament_id=4)
-bracket=tour.getBracket("Male")
-bracket.reverse()
-for i in bracket:
-    print("#"*40)
-    print(i.getFkPlayer1())
-    print(i.getFkPlayer2())
-    print("#"*40, end="\n\n")
+# tour = Tournament(tournament_id=4)
+# bracket=tour.getBracket("Male")
+# bracket.reverse()
+# for i in bracket:
+#     print("#"*40)
+#     print(i.getFkPlayer1())
+#     print(i.getFkPlayer2())
+#     print("#"*40, end="\n\n")
 # tour.getMatchByWinnerID(54,3)
 # arr1=tour.getBracket("Male")
 # arr=tour.getBracket2("Male")
@@ -445,5 +473,4 @@ for i in bracket:
 #     print(i.getPlayer2Name())
 #     print(i.getWinner())
 #     print("#"*40, end="\n\n")
-
 session.close()

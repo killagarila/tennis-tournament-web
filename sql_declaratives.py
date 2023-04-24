@@ -37,6 +37,7 @@ class Matches (Base):
     fkplayer2 = Column(Integer, ForeignKey('player.player_id'), nullable = False)
     fkwinner = Column(Integer, ForeignKey('player.player_id'), nullable = False)
     fktournament = Column(Integer, ForeignKey('tournament.tournament_id'), nullable = False)
+    gender = Column(String, nullable = False)
 
 class Players (Base):
     __tablename__= 'player'

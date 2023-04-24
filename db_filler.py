@@ -121,9 +121,11 @@ def fillMatches():
                         winner = int(str(row["Player A"]).strip("MP"))
                     else:
                         winner = int(str(row["Player B"]).strip("MP"))
-                    new_match=Match(fkplayer_1=int(str(row["Player A"]).strip("MP")),fkplayer_2=int(str(row["Player B"]).strip("MP")),score_player1=row["Score Player A"],score_player2=row["Score Player B"],fkwinner=winner,round=round,fktournament=tournament_id)   
-                    new_match.givePoints()  
-                    new_match.givePrizes()           
+                    print(f"sum of rows{row['Score Player A']+row['Score Player B']}")
+                    if row["Score Player A"]+row["Score Player B"]<=5 and row["Score Player A"]+row["Score Player B"]>=3:
+                        new_match=Match(fkplayer_1=int(str(row["Player A"]).strip("MP")),fkplayer_2=int(str(row["Player B"]).strip("MP")),score_player1=row["Score Player A"],score_player2=row["Score Player B"],fkwinner=winner,round=round,fktournament=tournament_id)   
+                        new_match.givePoints()  
+                        new_match.givePrizes()         
             elif "LADIES" in filename:
                 round = filename.strip("LADIES.csv")
                 # print(round)
