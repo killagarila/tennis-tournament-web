@@ -137,7 +137,10 @@ html, body {
     min-height: 100px;
     max-height: fit-content;
     background-color: rgba(141, 159, 135, 0.9); /* background colour on table */
-    margin: auto;
+    margin-top: 20%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: auto;
     border-radius: 20px;
     text-align: center;
     color:white;
@@ -331,3 +334,27 @@ section > div:nth-child(2n) {
   text-align: left;
 }
 
+.alert {
+  padding: 31px;
+  background-color: #f44336;
+  color: white;
+  margin-top: 50px;
+  border-radius: 25px;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 0px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}

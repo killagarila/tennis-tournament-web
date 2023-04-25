@@ -25,7 +25,6 @@
                     <a href="/newmatch">Add match</a>
                 </div>
             </nav>
-            <h1>{{error}}</h1>
             <div class="inputbox">
                 <form method="POST">
                     <!--Form for creating a new match with basic data validation in html-->
@@ -58,6 +57,11 @@
                     <input type="submit" id="newdatasubmit" name="newdatasubmit">
                 </form>
             </div>
+            {% if error is defined and error|length %}
+                <div id="alert_box" class="alert"><span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>{{error}}</div>
+            {% else %}
+                <p></p>
+            {%endif%}
         </div>
     </body>
 </html>

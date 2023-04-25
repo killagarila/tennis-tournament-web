@@ -67,15 +67,13 @@ def homepage():
     male_earners=p1Leaderboard("Male", "earnings")
     female_earners=p1Leaderboard("Female", "earnings")
     return render_template('p1.html',tournaments=tournaments, male_leaders=male_leaders, male_earners=male_earners, female_leaders=female_leaders, female_earners=female_earners)
+
 @app.route('/newmatch',methods=["GET","POST"])
 def newMatch():
     if request.method == 'GET':
         tournaments=getTournaments()
         return render_template('inputscreen.html',tournaments=tournaments)
     if request.method == 'POST':
-
-# @app.route('/addmatch',methods=["GET","POST"])
-# def newMatchForm():
         tournaments=getTournaments()
         print("new match is running")
         session = DBSession()
@@ -89,19 +87,17 @@ def newMatch():
         tround=request.form['tround']
         #print(tournamentSel)
         if "MP" not in player1name or "FP" not in player1name or "MP" not in player2name or "FP" not in player2name:
-            # error = "Invalid player name"
-            return redirect(url_for('newMatch')) 
+            error = "Invalid player name"
+            return render_template('inputscreen.html',error=error)
         player1 = session.query(Players).filter_by(name=player1name).scalar()
         player2 = session.query(Players).filter_by(name=player2name).scalar()
         fktour = session.query(Tournaments).filter_by(name = tournamentSel).scalar()
         print(fktour.tournament_id)
         if player1==None or player2==None:
-            print("zeby")
             error="Player names do not exist"
             return error, redirect(url_for('newMatch'))
         #Validating data inputaddmatch
         if player1score==player2score:
-            print("a7a")
             error="Player scores cannot be the same"
             return error,redirect(url_for('newMatch'))
         if player1score > player2score:
@@ -127,13 +123,11 @@ def newMatch():
                 if type(new_match)!=None:
                     error="Match already exists"
                     return redirect(url_for('newMatch'))
-                print("here")
                 if int(player1score+player2score)<=5 or int(player1score+player2score)>=3:
                     if player1score=="3" or player2score=="3":
                         newMatch=Match(fkplayer_1=int(player1.player_id),fkplayer_2=int(player2.player_id),score_player1=int(player1score),score_player2=int(player2score),fkwinner=int(winner),fktournament=int(fktour.tournament_id),round=int(tround))
                     else:
-                        print("leh")
-                        return redirect(url_for('newMatch'))
+                        return redirect(url_for('newMatch'),error=error)
             elif player2.gender == 'Female':
                 if int(player1score+player2score)<=3 or int(player1score+player2score)>=2:
                     if player1score=="2" or player2score=="2":
